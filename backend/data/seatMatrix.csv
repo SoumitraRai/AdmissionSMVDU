@@ -1,5 +1,7 @@
 departmentId,category,subCategory,totalSeats
 cs,GEN,GNGN,10
+cs,GEN,CDP,1
+cs,GEN,PWD,1
 ce,GEN,GNGN,11
 ece,GEN,GNGN,11
 ee,GEN,GNGN,12

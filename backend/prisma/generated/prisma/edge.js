@@ -177,7 +177,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/hecker_01/Projects/AdmissionSMVDU/backend/prisma/generated/prisma",
+      "value": "/home/apiksha/Desktop/AdmissionSMVDU/backend/prisma/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -195,7 +195,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/hecker_01/Projects/AdmissionSMVDU/backend/prisma/schema.prisma",
+    "sourceFilePath": "/home/apiksha/Desktop/AdmissionSMVDU/backend/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -209,11 +209,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://admin:lFH16j8AqOj5awl3caZzYs5VwI8chzMd@dpg-cvtuqphr0fns73e1g37g-a.singapore-postgres.render.com/smvdu_admission_db"
+        "value": null
       }
     }
   },
