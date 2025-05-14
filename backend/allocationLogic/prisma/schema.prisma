@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "windows"]
+  output        = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Department {
+  id          String        @id
+  name        String
+  seatMatrix  SeatMatrix[]
+  allocations AllocatedSeat[]
+}
+
+model StudentApplication {
+  applicationNumber String         @id
+  studentName      String
+  fatherMotherName String
+  phoneNumber      String
+  email           String
+  jeeCRL          Int
+  category        String
+  subCategory     String
+  categoryRank    Int
+  courseChoice1   String?
+  courseChoice2   String?
+  courseChoice3   String?
+  courseChoice4   String?
+  courseChoice5   String?
+  courseChoice6   String?
+  courseChoice7   String?
+  createdAt       DateTime       @default(now())
+  allocations     AllocatedSeat[]
+}
+
+model SeatMatrix {
+  id           Int        @id @default(autoincrement())
+  departmentId String
+  category     String
+  subCategory  String
+  totalSeats   Int
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  @@unique([departmentId, category, subCategory])
+}
+
+model AllocatedSeat {
+  id              Int                @id @default(autoincrement())
+  studentId       String
+  departmentId    String
+  allocationRound Int
+  category        String
+  subCategory     String
+  allocatedAt     DateTime           @default(now())
+  student         StudentApplication @relation(fields: [studentId], references: [applicationNumber])
+  department      Department         @relation(fields: [departmentId], references: [id])
+  choiceNumber    Int
+  jeeRank         Int
+}
