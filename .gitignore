@@ -1,3 +1,4 @@
 backend/generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node
 backend/prisma/generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node
 backend/.env
+backend/allocationLogic/.env
