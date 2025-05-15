@@ -87,6 +87,9 @@ async function main() {
       courseChoice5: student.courseChoice5,
       courseChoice6: student.courseChoice6,
       courseChoice7: student.courseChoice7,
+      sptRank: student.sptRank,
+      cdpPriority: student.cdpPriority,
+      pwdRank: student.pwdRank,
       createdAt: new Date(),
     })),
   });
