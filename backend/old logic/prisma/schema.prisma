@@ -25,7 +25,9 @@ model StudentApplication {
   category          String
   categoryRank      Int?
   subCategory       String?
-  subCategoryRank   Int?
+  sptMarks          Int
+  pwdPriority       Int
+  cdpRank           Int
 
   courseChoice1 String
   courseChoice2 String?
