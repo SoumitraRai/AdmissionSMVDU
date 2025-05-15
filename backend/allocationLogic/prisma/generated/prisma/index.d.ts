@@ -2286,11 +2286,17 @@ export namespace Prisma {
   export type StudentApplicationAvgAggregateOutputType = {
     jeeCRL: number | null
     categoryRank: number | null
+    sptMarks: number | null
+    cdpPriority: number | null
+    pwdRank: number | null
   }
 
   export type StudentApplicationSumAggregateOutputType = {
     jeeCRL: number | null
     categoryRank: number | null
+    sptMarks: number | null
+    cdpPriority: number | null
+    pwdRank: number | null
   }
 
   export type StudentApplicationMinAggregateOutputType = {
@@ -2303,6 +2309,9 @@ export namespace Prisma {
     category: string | null
     subCategory: string | null
     categoryRank: number | null
+    sptMarks: number | null
+    cdpPriority: number | null
+    pwdRank: number | null
     courseChoice1: string | null
     courseChoice2: string | null
     courseChoice3: string | null
@@ -2323,6 +2332,9 @@ export namespace Prisma {
     category: string | null
     subCategory: string | null
     categoryRank: number | null
+    sptMarks: number | null
+    cdpPriority: number | null
+    pwdRank: number | null
     courseChoice1: string | null
     courseChoice2: string | null
     courseChoice3: string | null
@@ -2343,6 +2355,9 @@ export namespace Prisma {
     category: number
     subCategory: number
     categoryRank: number
+    sptMarks: number
+    cdpPriority: number
+    pwdRank: number
     courseChoice1: number
     courseChoice2: number
     courseChoice3: number
@@ -2358,11 +2373,17 @@ export namespace Prisma {
   export type StudentApplicationAvgAggregateInputType = {
     jeeCRL?: true
     categoryRank?: true
+    sptMarks?: true
+    cdpPriority?: true
+    pwdRank?: true
   }
 
   export type StudentApplicationSumAggregateInputType = {
     jeeCRL?: true
     categoryRank?: true
+    sptMarks?: true
+    cdpPriority?: true
+    pwdRank?: true
   }
 
   export type StudentApplicationMinAggregateInputType = {
@@ -2375,6 +2396,9 @@ export namespace Prisma {
     category?: true
     subCategory?: true
     categoryRank?: true
+    sptMarks?: true
+    cdpPriority?: true
+    pwdRank?: true
     courseChoice1?: true
     courseChoice2?: true
     courseChoice3?: true
@@ -2395,6 +2419,9 @@ export namespace Prisma {
     category?: true
     subCategory?: true
     categoryRank?: true
+    sptMarks?: true
+    cdpPriority?: true
+    pwdRank?: true
     courseChoice1?: true
     courseChoice2?: true
     courseChoice3?: true
@@ -2415,6 +2442,9 @@ export namespace Prisma {
     category?: true
     subCategory?: true
     categoryRank?: true
+    sptMarks?: true
+    cdpPriority?: true
+    pwdRank?: true
     courseChoice1?: true
     courseChoice2?: true
     courseChoice3?: true
@@ -2522,6 +2552,9 @@ export namespace Prisma {
     category: string
     subCategory: string
     categoryRank: number
+    sptMarks: number
+    cdpPriority: number
+    pwdRank: number
     courseChoice1: string | null
     courseChoice2: string | null
     courseChoice3: string | null
@@ -2561,6 +2594,9 @@ export namespace Prisma {
     category?: boolean
     subCategory?: boolean
     categoryRank?: boolean
+    sptMarks?: boolean
+    cdpPriority?: boolean
+    pwdRank?: boolean
     courseChoice1?: boolean
     courseChoice2?: boolean
     courseChoice3?: boolean
@@ -2583,6 +2619,9 @@ export namespace Prisma {
     category?: boolean
     subCategory?: boolean
     categoryRank?: boolean
+    sptMarks?: boolean
+    cdpPriority?: boolean
+    pwdRank?: boolean
     courseChoice1?: boolean
     courseChoice2?: boolean
     courseChoice3?: boolean
@@ -2603,6 +2642,9 @@ export namespace Prisma {
     category?: boolean
     subCategory?: boolean
     categoryRank?: boolean
+    sptMarks?: boolean
+    cdpPriority?: boolean
+    pwdRank?: boolean
     courseChoice1?: boolean
     courseChoice2?: boolean
     courseChoice3?: boolean
@@ -2623,6 +2665,9 @@ export namespace Prisma {
     category?: boolean
     subCategory?: boolean
     categoryRank?: boolean
+    sptMarks?: boolean
+    cdpPriority?: boolean
+    pwdRank?: boolean
     courseChoice1?: boolean
     courseChoice2?: boolean
     courseChoice3?: boolean
@@ -2633,7 +2678,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type StudentApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"applicationNumber" | "studentName" | "fatherMotherName" | "phoneNumber" | "email" | "jeeCRL" | "category" | "subCategory" | "categoryRank" | "courseChoice1" | "courseChoice2" | "courseChoice3" | "courseChoice4" | "courseChoice5" | "courseChoice6" | "courseChoice7" | "createdAt", ExtArgs["result"]["studentApplication"]>
+  export type StudentApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"applicationNumber" | "studentName" | "fatherMotherName" | "phoneNumber" | "email" | "jeeCRL" | "category" | "subCategory" | "categoryRank" | "sptMarks" | "cdpPriority" | "pwdRank" | "courseChoice1" | "courseChoice2" | "courseChoice3" | "courseChoice4" | "courseChoice5" | "courseChoice6" | "courseChoice7" | "createdAt", ExtArgs["result"]["studentApplication"]>
   export type StudentApplicationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     allocations?: boolean | StudentApplication$allocationsArgs<ExtArgs>
     _count?: boolean | StudentApplicationCountOutputTypeDefaultArgs<ExtArgs>
@@ -2656,6 +2701,9 @@ export namespace Prisma {
       category: string
       subCategory: string
       categoryRank: number
+      sptMarks: number
+      cdpPriority: number
+      pwdRank: number
       courseChoice1: string | null
       courseChoice2: string | null
       courseChoice3: string | null
@@ -3097,6 +3145,9 @@ export namespace Prisma {
     readonly category: FieldRef<"StudentApplication", 'String'>
     readonly subCategory: FieldRef<"StudentApplication", 'String'>
     readonly categoryRank: FieldRef<"StudentApplication", 'Int'>
+    readonly sptMarks: FieldRef<"StudentApplication", 'Int'>
+    readonly cdpPriority: FieldRef<"StudentApplication", 'Int'>
+    readonly pwdRank: FieldRef<"StudentApplication", 'Int'>
     readonly courseChoice1: FieldRef<"StudentApplication", 'String'>
     readonly courseChoice2: FieldRef<"StudentApplication", 'String'>
     readonly courseChoice3: FieldRef<"StudentApplication", 'String'>
@@ -5827,6 +5878,9 @@ export namespace Prisma {
     category: 'category',
     subCategory: 'subCategory',
     categoryRank: 'categoryRank',
+    sptMarks: 'sptMarks',
+    cdpPriority: 'cdpPriority',
+    pwdRank: 'pwdRank',
     courseChoice1: 'courseChoice1',
     courseChoice2: 'courseChoice2',
     courseChoice3: 'courseChoice3',
@@ -6010,6 +6064,9 @@ export namespace Prisma {
     category?: StringFilter<"StudentApplication"> | string
     subCategory?: StringFilter<"StudentApplication"> | string
     categoryRank?: IntFilter<"StudentApplication"> | number
+    sptMarks?: IntFilter<"StudentApplication"> | number
+    cdpPriority?: IntFilter<"StudentApplication"> | number
+    pwdRank?: IntFilter<"StudentApplication"> | number
     courseChoice1?: StringNullableFilter<"StudentApplication"> | string | null
     courseChoice2?: StringNullableFilter<"StudentApplication"> | string | null
     courseChoice3?: StringNullableFilter<"StudentApplication"> | string | null
@@ -6031,6 +6088,9 @@ export namespace Prisma {
     category?: SortOrder
     subCategory?: SortOrder
     categoryRank?: SortOrder
+    sptMarks?: SortOrder
+    cdpPriority?: SortOrder
+    pwdRank?: SortOrder
     courseChoice1?: SortOrderInput | SortOrder
     courseChoice2?: SortOrderInput | SortOrder
     courseChoice3?: SortOrderInput | SortOrder
@@ -6055,6 +6115,9 @@ export namespace Prisma {
     category?: StringFilter<"StudentApplication"> | string
     subCategory?: StringFilter<"StudentApplication"> | string
     categoryRank?: IntFilter<"StudentApplication"> | number
+    sptMarks?: IntFilter<"StudentApplication"> | number
+    cdpPriority?: IntFilter<"StudentApplication"> | number
+    pwdRank?: IntFilter<"StudentApplication"> | number
     courseChoice1?: StringNullableFilter<"StudentApplication"> | string | null
     courseChoice2?: StringNullableFilter<"StudentApplication"> | string | null
     courseChoice3?: StringNullableFilter<"StudentApplication"> | string | null
@@ -6076,6 +6139,9 @@ export namespace Prisma {
     category?: SortOrder
     subCategory?: SortOrder
     categoryRank?: SortOrder
+    sptMarks?: SortOrder
+    cdpPriority?: SortOrder
+    pwdRank?: SortOrder
     courseChoice1?: SortOrderInput | SortOrder
     courseChoice2?: SortOrderInput | SortOrder
     courseChoice3?: SortOrderInput | SortOrder
@@ -6104,6 +6170,9 @@ export namespace Prisma {
     category?: StringWithAggregatesFilter<"StudentApplication"> | string
     subCategory?: StringWithAggregatesFilter<"StudentApplication"> | string
     categoryRank?: IntWithAggregatesFilter<"StudentApplication"> | number
+    sptMarks?: IntWithAggregatesFilter<"StudentApplication"> | number
+    cdpPriority?: IntWithAggregatesFilter<"StudentApplication"> | number
+    pwdRank?: IntWithAggregatesFilter<"StudentApplication"> | number
     courseChoice1?: StringNullableWithAggregatesFilter<"StudentApplication"> | string | null
     courseChoice2?: StringNullableWithAggregatesFilter<"StudentApplication"> | string | null
     courseChoice3?: StringNullableWithAggregatesFilter<"StudentApplication"> | string | null
@@ -6305,6 +6374,9 @@ export namespace Prisma {
     category: string
     subCategory: string
     categoryRank: number
+    sptMarks: number
+    cdpPriority: number
+    pwdRank: number
     courseChoice1?: string | null
     courseChoice2?: string | null
     courseChoice3?: string | null
@@ -6326,6 +6398,9 @@ export namespace Prisma {
     category: string
     subCategory: string
     categoryRank: number
+    sptMarks: number
+    cdpPriority: number
+    pwdRank: number
     courseChoice1?: string | null
     courseChoice2?: string | null
     courseChoice3?: string | null
@@ -6347,6 +6422,9 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     subCategory?: StringFieldUpdateOperationsInput | string
     categoryRank?: IntFieldUpdateOperationsInput | number
+    sptMarks?: IntFieldUpdateOperationsInput | number
+    cdpPriority?: IntFieldUpdateOperationsInput | number
+    pwdRank?: IntFieldUpdateOperationsInput | number
     courseChoice1?: NullableStringFieldUpdateOperationsInput | string | null
     courseChoice2?: NullableStringFieldUpdateOperationsInput | string | null
     courseChoice3?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6368,6 +6446,9 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     subCategory?: StringFieldUpdateOperationsInput | string
     categoryRank?: IntFieldUpdateOperationsInput | number
+    sptMarks?: IntFieldUpdateOperationsInput | number
+    cdpPriority?: IntFieldUpdateOperationsInput | number
+    pwdRank?: IntFieldUpdateOperationsInput | number
     courseChoice1?: NullableStringFieldUpdateOperationsInput | string | null
     courseChoice2?: NullableStringFieldUpdateOperationsInput | string | null
     courseChoice3?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6389,6 +6470,9 @@ export namespace Prisma {
     category: string
     subCategory: string
     categoryRank: number
+    sptMarks: number
+    cdpPriority: number
+    pwdRank: number
     courseChoice1?: string | null
     courseChoice2?: string | null
     courseChoice3?: string | null
@@ -6409,6 +6493,9 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     subCategory?: StringFieldUpdateOperationsInput | string
     categoryRank?: IntFieldUpdateOperationsInput | number
+    sptMarks?: IntFieldUpdateOperationsInput | number
+    cdpPriority?: IntFieldUpdateOperationsInput | number
+    pwdRank?: IntFieldUpdateOperationsInput | number
     courseChoice1?: NullableStringFieldUpdateOperationsInput | string | null
     courseChoice2?: NullableStringFieldUpdateOperationsInput | string | null
     courseChoice3?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6429,6 +6516,9 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     subCategory?: StringFieldUpdateOperationsInput | string
     categoryRank?: IntFieldUpdateOperationsInput | number
+    sptMarks?: IntFieldUpdateOperationsInput | number
+    cdpPriority?: IntFieldUpdateOperationsInput | number
+    pwdRank?: IntFieldUpdateOperationsInput | number
     courseChoice1?: NullableStringFieldUpdateOperationsInput | string | null
     courseChoice2?: NullableStringFieldUpdateOperationsInput | string | null
     courseChoice3?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6690,6 +6780,9 @@ export namespace Prisma {
     category?: SortOrder
     subCategory?: SortOrder
     categoryRank?: SortOrder
+    sptMarks?: SortOrder
+    cdpPriority?: SortOrder
+    pwdRank?: SortOrder
     courseChoice1?: SortOrder
     courseChoice2?: SortOrder
     courseChoice3?: SortOrder
@@ -6703,6 +6796,9 @@ export namespace Prisma {
   export type StudentApplicationAvgOrderByAggregateInput = {
     jeeCRL?: SortOrder
     categoryRank?: SortOrder
+    sptMarks?: SortOrder
+    cdpPriority?: SortOrder
+    pwdRank?: SortOrder
   }
 
   export type StudentApplicationMaxOrderByAggregateInput = {
@@ -6715,6 +6811,9 @@ export namespace Prisma {
     category?: SortOrder
     subCategory?: SortOrder
     categoryRank?: SortOrder
+    sptMarks?: SortOrder
+    cdpPriority?: SortOrder
+    pwdRank?: SortOrder
     courseChoice1?: SortOrder
     courseChoice2?: SortOrder
     courseChoice3?: SortOrder
@@ -6735,6 +6834,9 @@ export namespace Prisma {
     category?: SortOrder
     subCategory?: SortOrder
     categoryRank?: SortOrder
+    sptMarks?: SortOrder
+    cdpPriority?: SortOrder
+    pwdRank?: SortOrder
     courseChoice1?: SortOrder
     courseChoice2?: SortOrder
     courseChoice3?: SortOrder
@@ -6748,6 +6850,9 @@ export namespace Prisma {
   export type StudentApplicationSumOrderByAggregateInput = {
     jeeCRL?: SortOrder
     categoryRank?: SortOrder
+    sptMarks?: SortOrder
+    cdpPriority?: SortOrder
+    pwdRank?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -7431,6 +7536,9 @@ export namespace Prisma {
     category: string
     subCategory: string
     categoryRank: number
+    sptMarks: number
+    cdpPriority: number
+    pwdRank: number
     courseChoice1?: string | null
     courseChoice2?: string | null
     courseChoice3?: string | null
@@ -7451,6 +7559,9 @@ export namespace Prisma {
     category: string
     subCategory: string
     categoryRank: number
+    sptMarks: number
+    cdpPriority: number
+    pwdRank: number
     courseChoice1?: string | null
     courseChoice2?: string | null
     courseChoice3?: string | null
@@ -7504,6 +7615,9 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     subCategory?: StringFieldUpdateOperationsInput | string
     categoryRank?: IntFieldUpdateOperationsInput | number
+    sptMarks?: IntFieldUpdateOperationsInput | number
+    cdpPriority?: IntFieldUpdateOperationsInput | number
+    pwdRank?: IntFieldUpdateOperationsInput | number
     courseChoice1?: NullableStringFieldUpdateOperationsInput | string | null
     courseChoice2?: NullableStringFieldUpdateOperationsInput | string | null
     courseChoice3?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7524,6 +7638,9 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     subCategory?: StringFieldUpdateOperationsInput | string
     categoryRank?: IntFieldUpdateOperationsInput | number
+    sptMarks?: IntFieldUpdateOperationsInput | number
+    cdpPriority?: IntFieldUpdateOperationsInput | number
+    pwdRank?: IntFieldUpdateOperationsInput | number
     courseChoice1?: NullableStringFieldUpdateOperationsInput | string | null
     courseChoice2?: NullableStringFieldUpdateOperationsInput | string | null
     courseChoice3?: NullableStringFieldUpdateOperationsInput | string | null

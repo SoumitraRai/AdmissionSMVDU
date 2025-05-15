@@ -24,8 +24,8 @@ async function main() {
 
   // Read CSV files from the correct location
   const departments = await readCSV('../data/departments.csv');
-  const seatMatrices = await readCSV('../data/seatMatrix.csv');
-  const studentApplications = await readCSV('../data/studentApplications.csv');
+  const seatMatrices = await readCSV('../data/seatMatrix[1].csv');
+  const studentApplications = await readCSV('../data/studentApplications2.csv');
 
   console.log('Loading data from CSV files...');
   
@@ -80,16 +80,16 @@ async function main() {
       category: student.category,
       subCategory: student.subCategory,
       categoryRank: parseInt(student.categoryRank),
-      courseChoice1: student.courseChoice1,
-      courseChoice2: student.courseChoice2,
-      courseChoice3: student.courseChoice3,
-      courseChoice4: student.courseChoice4,
-      courseChoice5: student.courseChoice5,
-      courseChoice6: student.courseChoice6,
-      courseChoice7: student.courseChoice7,
-      sptMarks: student.sptMarks,
-      cdpPriority: student.cdpPriority,
-      pwdRank: student.pwdRank,
+      courseChoice1: student.courseChoice1 || null,
+      courseChoice2: student.courseChoice2 || null,
+      courseChoice3: student.courseChoice3 || null,
+      courseChoice4: student.courseChoice4 || null,
+      courseChoice5: student.courseChoice5 || null,
+      courseChoice6: student.courseChoice6 || null,
+      courseChoice7: student.courseChoice7 || null,
+      sptMarks: parseInt(student.sptMarks) || 0,
+      cdpPriority: parseInt(student.cdpPriority) || 0,
+      pwdRank: parseInt(student.pwdRank) || 0,
       createdAt: new Date(),
     })),
   });

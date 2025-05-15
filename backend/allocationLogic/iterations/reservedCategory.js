@@ -67,7 +67,7 @@ export async function runReservedCategoryAllocation(students, round) {
                     mode: 'upgrade',
                     checkExisting: true,
                     allowVacate: true,
-                    sortCriteria: getSortCriteriaForCategory(category)
+                    sortCriteria: getSortCriteriaForCategory(category, subCategory)
                 });
 
                 // Safely merge subcategory results
@@ -87,8 +87,52 @@ export async function runReservedCategoryAllocation(students, round) {
     return results;
 }
 
-function getSortCriteriaForCategory(category) {
-    return 'rank'; // Default to rank-based sorting
+function getSortCriteriaForCategory(category, subCategory = null) {
+    // If subCategory is provided, handle specific subcategory sorting
+    if (subCategory) {
+        switch(true) {
+            // Sports quota
+            case subCategory.endsWith('SPT'):
+                return student => ({
+                    primary: -student.sptMarks,  // Higher marks first
+                    secondary: student.jeeCRL     // Lower rank better
+                });
+            
+            // Children of Defense Personnel
+            case subCategory.endsWith('CDP'):
+                return student => ({
+                    primary: -student.cdpPriority,  // Higher priority first
+                    secondary: student.jeeCRL
+                });
+            
+            // Persons with Disability
+            case subCategory.endsWith('PWD'):
+                return student => ({
+                    primary: student.pwdRank,     // Lower rank better
+                    secondary: student.jeeCRL
+                });
+
+            // Children of Faculty/Staff Personnel
+            case subCategory.endsWith('CFP'):
+                return student => ({
+                    primary: -student.cdpPriority,  // Higher priority first
+                    secondary: student.jeeCRL
+                });
+            
+            // Default subcategory sorting
+            default:
+                return student => ({
+                    primary: student.categoryRank,
+                    secondary: student.jeeCRL
+                });
+        }
+    }
+
+    // Default sorting for main categories
+    return student => ({
+        primary: student.categoryRank,
+        secondary: student.jeeCRL
+    });
 }
 
 export default runReservedCategoryAllocation;
