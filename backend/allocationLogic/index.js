@@ -6,7 +6,7 @@ import runReservedCategoryAllocation from './iterations/reservedCategory.js';
 const prisma = new PrismaClient();
 
 export async function startAllocationProcess() {
-    console.log('Function started');  // Add this line
+    console.log('Function started');
     let round = 1;
     let continueAllocation = true;
     
@@ -14,6 +14,11 @@ export async function startAllocationProcess() {
         // Test database connection
         await prisma.$connect();
         console.log('Database connected');
+        
+        // Get all students once at the start
+        const allStudents = await prisma.studentApplication.findMany({
+            orderBy: { jeeCRL: 'asc' }
+        });
         
         // Initial seat matrix status
         console.log('\n=== Initial Seat Matrix Status ===');
@@ -28,23 +33,20 @@ export async function startAllocationProcess() {
         while (continueAllocation) {
             console.log(`\n=== Starting Allocation Round ${round} ===\n`);
 
-            // Get and show all students
-            const students = await prisma.studentApplication.findMany({
-                orderBy: { jeeCRL: 'asc' }
-            });
-            console.log(`Total students to process: ${students.length}`);
+            // Use allStudents instead of fetching again
+            console.log(`Total students to process: ${allStudents.length}`);
             console.log('Sample student data:');
-            console.table(students.slice(0, 3).map(s => ({
+            console.table(allStudents.slice(0, 3).map(s => ({
                 appNo: s.applicationNumber,
-                jeeCRL: s.jeeCRL,           // Changed from rank to jeeCRL
+                jeeCRL: s.jeeCRL,
                 cat: s.category,
                 subcat: s.subCategory,
                 choice1: s.courseChoice1
             })));
 
-            // Run and log initial allocation
+            // Pass allStudents to allocation functions
             console.log('\n--- Initial Allocation Phase ---');
-            const initial = await runInitialAllocation(students, round);
+            const initial = await runInitialAllocation(allStudents, round);
             console.log(`Initial allocation results:`);
             console.log(`✓ Success: ${initial.success.length}`);
             console.log(`✗ Failures: ${initial.failures.length}`);
@@ -53,9 +55,8 @@ export async function startAllocationProcess() {
                 console.table(initial.success.slice(0, 3));
             }
 
-            // Run and log general subcategory allocation
             console.log('\n--- General Subcategory Phase ---');
-            const general = await runGeneralSubcategoryAllocation(students, round);
+            const general = await runGeneralSubcategoryAllocation(allStudents, round);
             console.log(`General subcategory results:`);
             console.log(`✓ Success: ${general.success.length}`);
             console.log(`✗ Failures: ${general.failures.length}`);
@@ -64,9 +65,8 @@ export async function startAllocationProcess() {
                 console.table(general.success.slice(0, 3));
             }
 
-            // Run and log reserved category allocation
             console.log('\n--- Reserved Category Phase ---');
-            const reserved = await runReservedCategoryAllocation(students, round);
+            const reserved = await runReservedCategoryAllocation(allStudents, round);
             console.log(`Reserved category results:`);
             console.log(`✓ Success: ${reserved.success.length}`);
             console.log(`✗ Failures: ${reserved.failures.length}`);
@@ -128,23 +128,83 @@ export async function startAllocationProcess() {
             round++;
         }
 
-        // Final allocation status
+        // Final allocation status with detailed unallocated seat analysis
+        console.log('\n=== Final Allocation Analysis ===');
+        
+        // Get all seats
+        const finalSeatStatus = await prisma.seatMatrix.findMany({
+            include: {
+                department: true  // Include department details if available
+            }
+        });
+
+        // Get all allocations
         const finalAllocations = await prisma.allocatedSeat.findMany({
             include: {
                 student: true
             }
         });
-        console.log('\n=== Final Allocation Summary ===');
-        console.log(`Total Allocations: ${finalAllocations.length}`);
-        if (finalAllocations.length > 0) {
-            console.log('Sample allocations:');
-            console.table(finalAllocations.slice(0, 5).map(alloc => ({
-                student: alloc.studentId,
-                dept: alloc.departmentId,
-                cat: alloc.category,
-                subcat: alloc.subCategory,
-                round: alloc.allocationRound
+
+        // Analyze unallocated seats
+        const unallocatedSeats = finalSeatStatus.filter(seat => seat.totalSeats > 0);
+        
+        // Get eligible but unallocated students for each seat
+        const unallocatedAnalysis = await Promise.all(unallocatedSeats.map(async seat => {
+            // Find eligible students for this seat
+            const eligibleStudents = allStudents.filter(student => {
+                // Check if student's choices include this department
+                const choices = [
+                    student.courseChoice1,
+                    student.courseChoice2,
+                    student.courseChoice3,
+                    student.courseChoice4,
+                    student.courseChoice5,
+                    student.courseChoice6,
+                    student.courseChoice7
+                ].filter(Boolean);
+
+                return choices.includes(seat.departmentId) &&
+                    (student.category === seat.category ||
+                    (student.category !== 'GEN' && seat.category === 'GEN')) &&
+                    student.subCategory === seat.subCategory;
+            });
+
+            // Find allocated students from eligible pool
+            const allocatedFromEligible = finalAllocations.filter(alloc =>
+                eligibleStudents.some(student => 
+                    student.applicationNumber === alloc.studentId
+                )
+            );
+
+            return {
+                department: seat.departmentId,
+                category: seat.category,
+                subCategory: seat.subCategory,
+                remainingSeats: seat.totalSeats,
+                eligibleCount: eligibleStudents.length,
+                allocatedElsewhere: allocatedFromEligible.length,
+                reason: determineUnallocationReason(
+                    seat,
+                    eligibleStudents,
+                    allocatedFromEligible
+                )
+            };
+        }));
+
+        // Display unallocated seats analysis
+        console.log('\n=== Unallocated Seats Analysis ===');
+        if (unallocatedAnalysis.length > 0) {
+            console.table(unallocatedAnalysis.map(analysis => ({
+                Dept: analysis.department,
+                Cat: analysis.category,
+                SubCat: analysis.subCategory,
+                Seats: analysis.remainingSeats,
+                Eligible: analysis.eligibleCount,
+                'Alloted Elsewhere': analysis.allocatedElsewhere,
+                Reason: analysis.reason
             })));
+        } else {
+            console.log('All seats have been allocated!');
         }
 
         console.log('\n=== Allocation Process Complete ===\n');
@@ -154,6 +214,20 @@ export async function startAllocationProcess() {
     } finally {
         await prisma.$disconnect();
     }
+}
+
+// Helper function to determine why seats weren't allocated
+function determineUnallocationReason(seat, eligibleStudents, allocatedElsewhere) {
+    if (eligibleStudents.length === 0) {
+        return 'No eligible students';
+    }
+    if (allocatedElsewhere.length === eligibleStudents.length) {
+        return 'All eligible students got better choices';
+    }
+    if (eligibleStudents.length < seat.totalSeats) {
+        return 'Insufficient eligible candidates';
+    }
+    return 'Eligible students got other preferences';
 }
 
 export default startAllocationProcess;
