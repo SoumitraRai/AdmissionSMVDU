@@ -112,7 +112,7 @@ function getSortCriteriaForCategory(category, subCategory = null) {
                 });
 
             // Children of Faculty/Staff Personnel
-            case subCategory.endsWith('CFP'):
+            case subCategory.endsWith('CPF'):
                 return student => ({
                     primary: -student.cdpPriority,  // Higher priority first
                     secondary: student.jeeCRL
