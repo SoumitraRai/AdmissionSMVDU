@@ -101,8 +101,7 @@ function getSortCriteriaForCategory(category, subCategory = null) {
             // Children of Defense Personnel
             case subCategory.endsWith('CDP'):
                 return student => ({
-                    primary: -student.cdpPriority,  // Higher priority first
-                    secondary: student.jeeCRL
+                    primary: student.jeeCRL
                 });
             
             // Persons with Disability

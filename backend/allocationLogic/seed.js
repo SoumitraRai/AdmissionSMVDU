@@ -15,6 +15,30 @@ async function readCSV(filePath) {
   });
 }
 
+function convertCourseName(fullName) {
+  const courseMap = {
+    'B. TECH. (COMPUTER SCIENCE & ENGINEERING)': 'cs',
+    'B. TECH. (ELECTRONICS & COMMUNICATION ENGINEERING)': 'ece',
+    'B. TECH. (MECHANICAL ENGINEERING)': 'me',
+    'B. TECH. (ELECTRICAL ENGINEERING)': 'ee',
+    'B. TECH. (CIVIL ENGINEERING)': 'ce',
+    'B. TECH. (MATHEMATICS & COMPUTING)': 'mnc',
+    'B. TECH. (ROBOTICS & AI)': 'ai_robotics'
+  };
+  return courseMap[fullName] || null;
+}
+
+function convertCategory(fullCategory) {
+  const categoryMap = {
+    'GENERAL': 'GEN',
+    'SCHEDULED CASTE (SC)': 'SC', 
+    'SCHEDULED TRIBE (ST)': 'ST',
+    'OTHER BACKWARD CLASSES (OBC)': 'OBC',
+    'ECONOMICALLY WEAKER SECTIONS (EWS)': 'EWS'
+  };
+  return categoryMap[fullCategory] || fullCategory;
+}
+
 async function main() {
   // Clear existing data
   await prisma.allocatedSeat.deleteMany();
@@ -25,7 +49,7 @@ async function main() {
   // Read CSV files from the correct location
   const departments = await readCSV('../data/departments.csv');
   const seatMatrices = await readCSV('../data/seatMatrix[1].csv');
-  const studentApplications = await readCSV('../data/studentApplications2.csv');
+  const studentApplications = await readCSV('../data/studentdatanewip.csv');
 
   console.log('Loading data from CSV files...');
   
@@ -73,25 +97,24 @@ async function main() {
     data: studentApplications.map((student) => ({
       applicationNumber: student.applicationNumber,
       studentName: student.studentName,
-      fatherMotherName: student.fatherMotherName,
-      phoneNumber: student.phoneNumber,
-      email: student.email,
-      jeeCRL: parseInt(student.jeeCRL),
-      category: student.category,
-      subCategory: student.subCategory,
-      categoryRank: parseInt(student.categoryRank),
-      courseChoice1: student.courseChoice1 || null,
-      courseChoice2: student.courseChoice2 || null,
-      courseChoice3: student.courseChoice3 || null,
-      courseChoice4: student.courseChoice4 || null,
-      courseChoice5: student.courseChoice5 || null,
-      courseChoice6: student.courseChoice6 || null,
-      courseChoice7: student.courseChoice7 || null,
-      sptMarks: parseInt(student.sptMarks) || 0,
-      cdpPriority: parseInt(student.cdpPriority) || 0,
-      pwdRank: parseInt(student.pwdRank) || 0,
-      createdAt: new Date(),
-    })),
+      fatherMotherName: student.fatherMotherName || '',
+      phoneNumber: student.phoneNumber || '',
+      email: student.email || '',
+      jeeCRL: parseInt(student.jeeCRL.replace(/,/g, '')),
+      category: convertCategory(student.category),
+      subCategory: student.subCategory || 'GNGN',
+      categoryRank: parseInt(student.categoryRank || '0'),
+      sptMarks: parseFloat(student.sptMarks || '0'),
+      cdpPriority: parseInt(student.cdpPriority || '0'),
+      pwdRank: parseInt(student.pwdRank || '0'),
+      courseChoice1: convertCourseName(student.courseChoice1),
+      courseChoice2: convertCourseName(student.courseChoice2),
+      courseChoice3: convertCourseName(student.courseChoice3),
+      courseChoice4: convertCourseName(student.courseChoice4),
+      courseChoice5: convertCourseName(student.courseChoice5),
+      courseChoice6: convertCourseName(student.courseChoice6),
+      courseChoice7: convertCourseName(student.courseChoice7)
+    }))
   });
 
   console.log('Seeding completed successfully!');
