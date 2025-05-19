@@ -1,19 +1,19 @@
 export const categories = {
     GEN: {
         main: 'GNGN',
-        sub: ['GNSPT', 'GNPWD', 'GNCDP', 'GNCPF']
+        sub: ['SPORTS', 'GNPWD', 'GNCDP', 'GNCPF']
     },
     EWS: {
         main: 'EWS',
-        sub: ['EWSSPT', 'EWSPWD', 'EWSCDP', 'EWSCPF']
+        sub: ['SPORTS', 'EWSPWD', 'EWSCDP', 'EWSCPF']
     },
     SC: {
         main: 'SC',
-        sub: ['SCSPT', 'SCPWD', 'SCCDP', 'SCCPF']
+        sub: ['SPORTS', 'SCPWD', 'SCCDP', 'SCCPF']
     },
     ST1: {
         main: 'ST1',
-        sub: ['ST1SPT', 'ST1PWD', 'ST1CDP', 'ST1CPF']
+        sub: ['SPORTS', 'ST1PWD', 'ST1CDP', 'ST1CPF']
     },
     // ST2: {
     //     main: 'ST2',
@@ -21,10 +21,10 @@ export const categories = {
     // },    
     RBA: {
         main: 'RBA',
-        sub: ['RBASPT', 'RBAPWD', 'RBACDP', 'RBACPF']
+        sub: ['SPORTS', 'RBAPWD', 'RBACDP', 'RBACPF']
     },
     OBC: {
         main: 'OBC',
-        sub: ['OBCSPT', 'OBCPWD', 'OBCCDP', 'OBCCPF']
+        sub: ['SPORTS', 'OBCPWD', 'OBCCDP', 'OBCCPF']
     }
 };

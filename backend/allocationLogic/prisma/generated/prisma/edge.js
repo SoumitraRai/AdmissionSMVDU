@@ -173,7 +173,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/hecker_01/Projects/AdmissionSMVDU/backend/allocationLogic/prisma/generated/prisma",
+      "value": "/home/apiksha/Desktop/AdmissionSMVDU/backend/allocationLogic/prisma/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -191,7 +191,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/hecker_01/Projects/AdmissionSMVDU/backend/allocationLogic/prisma/schema.prisma",
+    "sourceFilePath": "/home/apiksha/Desktop/AdmissionSMVDU/backend/allocationLogic/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

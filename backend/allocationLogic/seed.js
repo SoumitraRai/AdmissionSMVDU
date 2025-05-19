@@ -32,7 +32,7 @@ function convertCategory(fullCategory) {
   const categoryMap = {
     'GENERAL': 'GEN',
     'SCHEDULED CASTE (SC)': 'SC', 
-    'SCHEDULED TRIBE (ST)': 'ST',
+    'SCHEDULED TRIBE (ST)': 'ST1',
     'OTHER BACKWARD CLASSES (OBC)': 'OBC',
     'ECONOMICALLY WEAKER SECTIONS (EWS)': 'EWS'
   };
@@ -48,8 +48,8 @@ async function main() {
 
   // Read CSV files from the correct location
   const departments = await readCSV('../data/departments.csv');
-  const seatMatrices = await readCSV('../data/seatMatrix[1].csv');
-  const studentApplications = await readCSV('../data/studentdatanewip.csv');
+  const seatMatrices = await readCSV('../data/seatMatrix.csv');
+  const studentApplications = await readCSV('../data/studentdatanewip_modified.csv');
 
   console.log('Loading data from CSV files...');
   
