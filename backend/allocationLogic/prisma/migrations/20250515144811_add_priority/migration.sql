@@ -1,4 +1,0 @@
--- AlterTable
-ALTER TABLE "StudentApplication" ALTER COLUMN "sptMarks" DROP DEFAULT,
-ALTER COLUMN "cdpPriority" DROP DEFAULT,
-ALTER COLUMN "pwdRank" DROP DEFAULT;

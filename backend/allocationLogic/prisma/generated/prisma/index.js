@@ -174,7 +174,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/apiksha/Desktop/AdmissionSMVDU/backend/allocationLogic/prisma/generated/prisma",
+      "value": "/home/hecker_01/Projects/AdmissionSMVDU/backend/allocationLogic/prisma/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -192,7 +192,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/apiksha/Desktop/AdmissionSMVDU/backend/allocationLogic/prisma/schema.prisma",
+    "sourceFilePath": "/home/hecker_01/Projects/AdmissionSMVDU/backend/allocationLogic/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -206,12 +206,11 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "postgresql://soumitra:admin123@localhost:5432/smvdu_admission_db"
       }
     }
   },

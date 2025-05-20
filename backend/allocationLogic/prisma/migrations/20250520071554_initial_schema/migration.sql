@@ -1,4 +1,12 @@
 -- CreateTable
+CREATE TABLE "Department" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "Department_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "StudentApplication" (
     "applicationNumber" TEXT NOT NULL,
     "studentName" TEXT NOT NULL,
@@ -7,28 +15,21 @@ CREATE TABLE "StudentApplication" (
     "email" TEXT NOT NULL,
     "jeeCRL" INTEGER NOT NULL,
     "category" TEXT NOT NULL,
-    "categoryRank" INTEGER,
-    "subCategory" TEXT,
-    "subCategoryRank" INTEGER,
-    "courseChoice1" TEXT NOT NULL,
+    "subCategory" TEXT NOT NULL,
+    "categoryRank" INTEGER NOT NULL,
+    "sptMarks" INTEGER NOT NULL,
+    "cdpPriority" INTEGER NOT NULL,
+    "pwdRank" INTEGER NOT NULL,
+    "courseChoice1" TEXT,
     "courseChoice2" TEXT,
     "courseChoice3" TEXT,
     "courseChoice4" TEXT,
     "courseChoice5" TEXT,
     "courseChoice6" TEXT,
     "courseChoice7" TEXT,
-    "sportsMarks" DOUBLE PRECISION,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "StudentApplication_pkey" PRIMARY KEY ("applicationNumber")
-);
-
--- CreateTable
-CREATE TABLE "Department" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-
-    CONSTRAINT "Department_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -46,29 +47,19 @@ CREATE TABLE "SeatMatrix" (
 CREATE TABLE "AllocatedSeat" (
     "id" SERIAL NOT NULL,
     "studentId" TEXT NOT NULL,
-    "allocatedCourse" TEXT NOT NULL,
+    "departmentId" TEXT NOT NULL,
     "allocationRound" INTEGER NOT NULL,
+    "category" TEXT NOT NULL,
+    "subCategory" TEXT NOT NULL,
     "allocatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "choiceNumber" INTEGER NOT NULL,
+    "jeeRank" INTEGER NOT NULL,
 
     CONSTRAINT "AllocatedSeat_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "OriginalSeatMatrix" (
-    "id" SERIAL NOT NULL,
-    "departmentId" TEXT NOT NULL,
-    "category" TEXT NOT NULL,
-    "subCategory" TEXT NOT NULL,
-    "totalSeats" INTEGER NOT NULL,
-
-    CONSTRAINT "OriginalSeatMatrix_pkey" PRIMARY KEY ("id")
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "SeatMatrix_departmentId_category_subCategory_key" ON "SeatMatrix"("departmentId", "category", "subCategory");
-
--- CreateIndex
-CREATE UNIQUE INDEX "OriginalSeatMatrix_departmentId_category_subCategory_key" ON "OriginalSeatMatrix"("departmentId", "category", "subCategory");
 
 -- AddForeignKey
 ALTER TABLE "SeatMatrix" ADD CONSTRAINT "SeatMatrix_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "Department"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -77,4 +68,4 @@ ALTER TABLE "SeatMatrix" ADD CONSTRAINT "SeatMatrix_departmentId_fkey" FOREIGN K
 ALTER TABLE "AllocatedSeat" ADD CONSTRAINT "AllocatedSeat_studentId_fkey" FOREIGN KEY ("studentId") REFERENCES "StudentApplication"("applicationNumber") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OriginalSeatMatrix" ADD CONSTRAINT "OriginalSeatMatrix_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "Department"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AllocatedSeat" ADD CONSTRAINT "AllocatedSeat_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "Department"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
