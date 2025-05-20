@@ -12,8 +12,7 @@ async function allocateSeats(students, options = {}) {
     try {
         for (const student of students) {
             console.log(`\nProcessing student ${student.applicationNumber} (JEE Rank: ${student.jeeCRL})`);
-            
-            // Get all choices in priority order
+
             const choices = [
                 student.courseChoice1,
                 student.courseChoice2,
@@ -27,23 +26,26 @@ async function allocateSeats(students, options = {}) {
             console.log(`Choices in order: ${choices.join(' > ')}`);
             let allocated = false;
 
-            // Try each choice in order
             for (const [index, choice] of choices.entries()) {
                 const result = await prisma.$transaction(async (tx) => {
-                    // Check for available seat
+                    // Seat filter logic
                     const seat = await tx.seatMatrix.findFirst({
                         where: {
                             departmentId: choice,
-                            totalSeats: { gt: 0 }
+                            totalSeats: { gt: 0 },
+                            ...(options?.mode === 'initial' && {
+                                category: 'GEN',
+                                subCategory: 'GNGN'
+                            })
                         }
                     });
 
                     if (!seat) {
-                        console.log(`Choice ${index + 1}: ${choice} - No seats available`);
+                        console.log(`Choice ${index + 1}: ${choice} - No eligible seats available`);
                         return null;
                     }
 
-                    // Allocate seat
+                    // Allocate the seat
                     await tx.seatMatrix.update({
                         where: { id: seat.id },
                         data: { totalSeats: { decrement: 1 } }
@@ -57,8 +59,7 @@ async function allocateSeats(students, options = {}) {
                             subCategory: student.subCategory,
                             allocationRound: options.round || 1,
                             choiceNumber: index + 1,
-                            jeeRank: student.jeeCRL,  // Make sure this matches the schema
-                            // allocatedAt will be set automatically
+                            jeeRank: student.jeeCRL
                         }
                     });
                 });
@@ -80,7 +81,7 @@ async function allocateSeats(students, options = {}) {
                 results.failures.push({
                     student: student.applicationNumber,
                     jeeRank: student.jeeCRL,
-                    reason: 'No seats available in any of the choices'
+                    reason: 'No eligible seats available in any of the choices'
                 });
             }
         }
