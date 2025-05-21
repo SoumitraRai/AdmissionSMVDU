@@ -1,6 +1,6 @@
-import allocateSeats from './allocateSeats.js';
-import { categories } from './categories.js';
-import { PrismaClient } from './prisma/generated/prisma/index.js';
+import allocateSeats from '../allocateSeats.js';
+import { categories } from '../categories.js';
+import { PrismaClient } from '../prisma/generated/prisma/index.js';
 
 const prisma = new PrismaClient();
 

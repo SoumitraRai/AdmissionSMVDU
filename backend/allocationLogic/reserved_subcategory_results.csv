@@ -1,7 +1,0 @@
-ApplicationNumber,Category,SubCategory,JEE_Rank,Category_Rank,Previous_Department,Previous_Choice,New_Department,New_Choice,Status
-20250000992,EWS,EWSSPT,671217,67121,None,None,cs,1,Success
-20250000288,SC,SCCPF,1023329,102332,None,2,,,Failed,No seats available in SC-SCCPF
-20250000557,SC,SCCPF,667577,667577,None,2,,,Failed,No seats available in SC-SCCPF
-20250000581,OBC,OBCSPT,297461,29746,None,7,,,Failed,No seats available in OBC-OBCSPT
-20250000752,OBC,OBCSPT,764518,76451,None,None,,,Failed,No seats available in OBC-OBCSPT
-20250001044,OBC,OBCCPF,272711,27271,None,2,,,Failed,No seats available in OBC-OBCCPF

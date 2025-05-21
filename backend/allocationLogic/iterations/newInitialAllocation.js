@@ -1,5 +1,5 @@
-import { PrismaClient } from './prisma/generated/prisma/index.js';
-import allocateSeats from './allocateSeats.js';
+import { PrismaClient } from '../prisma/generated/prisma/index.js';
+import allocateSeats from '../allocateSeats.js';
 import dotenv from 'dotenv';
 dotenv.config();
 

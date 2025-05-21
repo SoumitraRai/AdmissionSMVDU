@@ -1,5 +1,5 @@
 import { PrismaClient } from './prisma/generated/prisma/index.js';
-import { runReservedSubcategoryAllocation } from './reservedSubcategory.js';
+import { runReservedSubcategoryAllocation } from './iterations/reservedSubcategory.js';
 import fs from 'fs';
 import path from 'path';
 
@@ -135,7 +135,7 @@ async function main() {
             );
         });
 
-        const matrixPath = path.join('./', `reserved_subcategory_seat_matrix_${new Date().toISOString().slice(0,10)}.csv`);
+        const matrixPath = path.join('./', `reserved_subcategory_seat_matrix.csv`);
         fs.writeFileSync(matrixPath, matrixReport.join('\n'));
         console.log(`✅ Seat matrix report saved to: ${matrixPath}`);
 

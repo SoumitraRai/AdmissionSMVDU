@@ -167,7 +167,7 @@ async function main() {
             );
         });
 
-        const matrixPath = path.join('./', `seat_matrix_update_round2_${new Date().toISOString().slice(0,10)}.csv`);
+        const matrixPath = path.join('./', `seat_matrix_update_round2.csv`);
         fs.writeFileSync(matrixPath, matrixReport.join('\n'));
         console.log(`\n✅ Seat matrix update report saved to: ${matrixPath}`);
 
