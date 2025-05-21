@@ -17,13 +17,13 @@ async function readCSV(filePath) {
 
 function convertCourseName(fullName) {
   const courseMap = {
-    'CSE': 'cs',
-    'ECE': 'ece',
-    'ME': 'me',
-    'EE': 'ee',
-    'CE': 'ce',
-    'M&C': 'mnc',
-    'R&AI': 'ai_robotics'
+    'B. TECH. (COMPUTER SCIENCE & ENGINEERING)': 'cs',
+    'B. TECH. (ELECTRONICS & COMMUNICATION ENGINEERING)': 'ece',
+    'B. TECH. (MECHANICAL ENGINEERING)': 'me',
+    'B. TECH. (ELECTRICAL ENGINEERING)': 'ee',
+    'B. TECH. (CIVIL ENGINEERING)': 'ce',
+    'B. TECH. (MATHEMATICS & COMPUTING)': 'mnc',
+    'B. TECH. (ROBOTICS & AI)': 'ai_robotics'
   };
   return courseMap[fullName] || null;
 }
@@ -31,8 +31,10 @@ function convertCourseName(fullName) {
 function convertCategory(fullCategory) {
   const categoryMap = {
     'GENERAL': 'GEN',
-    'ST 1': 'ST1',
-    'ST 2': 'ST2',
+    'SCHEDULED CASTE (SC)': 'SC', 
+    'SCHEDULED TRIBE (ST)': 'ST1',
+    'OTHER BACKWARD CLASSES (OBC)': 'OBC',
+    'ECONOMICALLY WEAKER SECTIONS (EWS)': 'EWS'
   };
   return categoryMap[fullCategory] || fullCategory;
 }
@@ -47,7 +49,7 @@ async function main() {
   // Read CSV files from the correct location
   const departments = await readCSV('../data/departments.csv');
   const seatMatrices = await readCSV('../data/seatMatrix.csv');
-  const studentApplications = await readCSV('../data/finalstudentdata.csv');
+  const studentApplications = await readCSV('../data/studentdatanewip_modified.csv');
 
   console.log('Loading data from CSV files...');
   
