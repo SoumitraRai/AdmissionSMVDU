@@ -39,8 +39,6 @@ cs,OBC,OBCPWD,1
 cs,OBC,OBCCDP,1
 cs,OBC,OBCCPF,0
 cs,OBC,OBCSPT,0
-
-
 ce,GEN,GNGN,11
 ce,GEN,GNPWD,1
 ce,GEN,GNCDP,1
@@ -81,8 +79,6 @@ ce,OBC,OBCPWD,0
 ce,OBC,OBCCDP,0
 ce,OBC,OBCCPF,0
 ce,OBC,OBCSPT,0
-
-
 ece,GEN,GNGN,11
 ece,GEN,GNPWD,1
 ece,GEN,GNCDP,1
@@ -123,8 +119,6 @@ ece,OBC,OBCPWD,0
 ece,OBC,OBCCDP,0
 ece,OBC,OBCCPF,0
 ece,OBC,OBCSPT,0
-
-
 ee,GEN,GNGN,12
 ee,GEN,GNPWD,1
 ee,GEN,GNCDP,1
@@ -165,8 +159,6 @@ ee,OBC,OBCPWD,0
 ee,OBC,OBCCDP,0
 ee,OBC,OBCCPF,0
 ee,OBC,OBCSPT,0
-
-
 mnc,GEN,GNGN,13
 mnc,GEN,GNPWD,1
 mnc,GEN,GNCDP,0
@@ -207,8 +199,6 @@ mnc,OBC,OBCPWD,0
 mnc,OBC,OBCCDP,0
 mnc,OBC,OBCCPF,0
 mnc,OBC,OBCSPT,0
-
-
 me,GEN,GNGN,7
 me,GEN,GNPWD,0
 me,GEN,GNCDP,0
@@ -249,8 +239,6 @@ me,OBC,OBCPWD,0
 me,OBC,OBCCDP,0
 me,OBC,OBCCPF,0
 me,OBC,OBCSPT,0
-
-
 ai_robotics,GEN,GNGN,13
 ai_robotics,GEN,GNPWD,0
 ai_robotics,GEN,GNCDP,0
@@ -276,7 +264,7 @@ ai_robotics,ST2,ST2PWD,0
 ai_robotics,ST2,ST2CDP,0
 ai_robotics,ST2,ST2CPF,0
 ai_robotics,ST2,ST2SPT,0
-a_robotics,RBA,RBA,3
+ai_robotics,RBA,RBA,3
 ai_robotics,RBA,RBAPWD,0
 ai_robotics,RBA,RBACDP,0
 ai_robotics,RBA,RBACPF,0
