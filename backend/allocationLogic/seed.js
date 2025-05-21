@@ -17,13 +17,13 @@ async function readCSV(filePath) {
 
 function convertCourseName(fullName) {
   const courseMap = {
-    'B. TECH. (COMPUTER SCIENCE & ENGINEERING)': 'cs',
-    'B. TECH. (ELECTRONICS & COMMUNICATION ENGINEERING)': 'ece',
-    'B. TECH. (MECHANICAL ENGINEERING)': 'me',
-    'B. TECH. (ELECTRICAL ENGINEERING)': 'ee',
-    'B. TECH. (CIVIL ENGINEERING)': 'ce',
-    'B. TECH. (MATHEMATICS & COMPUTING)': 'mnc',
-    'B. TECH. (ROBOTICS & AI)': 'ai_robotics'
+    'CSE': 'cs',
+    'ECE': 'ece',
+    'ME': 'me',
+    'EE': 'ee',
+    'CE': 'ce',
+    'M&C': 'mnc',
+    'R&AI': 'ai_robotics'
   };
   return courseMap[fullName] || null;
 }
