@@ -55,16 +55,25 @@ export async function runGeneralSubcategoryAllocation(students, round) {
                 // Check if student belongs to this subcategory
                 if (s.subCategory !== subCategory) return false;
                 
-                // Skip students who already have their 1st choice
+                // Skip students who already have any 1st choice allocation
                 if (s.allocations && s.allocations.length > 0) {
-                    const allocation = s.allocations[0];
-                    if (allocation.choiceNumber === 1) {
-                        console.log(`Skipping student ${s.applicationNumber} - Already has 1st choice`);
+                    const hasFirstChoice = s.allocations.some(a => a.choiceNumber === 1);
+                    if (hasFirstChoice) {
+                        console.log(`Skipping student ${s.applicationNumber} - Already has 1st choice allocation`);
                         return false;
                     }
                 }
                 
                 return true;
+            });
+
+            // Debug: Print eligible students
+            console.log(`Eligible students for ${subCategory}:`);
+            eligibleStudents.forEach(s => {
+                const allocs = s.allocations?.map(a => 
+                    `${a.departmentId} (Choice ${a.choiceNumber})`
+                ).join(', ') || 'None';
+                console.log(`- ${s.applicationNumber}: ${subCategory === 'GNSPT' ? `Sports Marks: ${s.sptMarks}` : ''} CRL: ${s.jeeCRL}, Allocs: ${allocs}`);
             });
 
             if (eligibleStudents.length === 0) {
@@ -98,17 +107,27 @@ export async function runGeneralSubcategoryAllocation(students, round) {
             // Sort students by the appropriate criteria before allocation
             const sortedStudents = [...eligibleStudents].sort((a, b) => {
                 switch (sortCriteria) {
-                    case 'rank':
-                        return a.jeeCRL - b.jeeCRL;  // Lower JEE rank is better (default for GNCDP)
-                    case 'sptMarks':
-                        return b.sptMarks - a.sptMarks;  // Higher sports marks is better (for GNSPT)
-                    case 'cdpPriority':
-                        return a.cdpPriority - b.cdpPriority;  // Lower priority number is better (1 is highest) (for GNCPF)
                     case 'pwdRank':
-                        return a.pwdRank - b.pwdRank;  // Lower PWD rank is better (for GNPWD)
+                        // First by PWD rank (ascending), then by JEE CRL (ascending)
+                        return a.pwdRank - b.pwdRank || a.jeeCRL - b.jeeCRL;
+                    case 'sptMarks':
+                        // First by sports marks (descending), then by JEE CRL (ascending)
+                        return b.sptMarks - a.sptMarks || a.jeeCRL - b.jeeCRL;
+                    case 'cdpPriority':
+                        // First by CDP priority (ascending), then by JEE CRL (ascending)
+                        return a.cdpPriority - b.cdpPriority || a.jeeCRL - b.jeeCRL;
+                    case 'rank':
                     default:
-                        return a.jeeCRL - b.jeeCRL;  // Default to JEE rank
+                        // Default to JEE rank (ascending)
+                        return a.jeeCRL - b.jeeCRL;
                 }
+            });
+
+            // Debug: Print sorted students
+            console.log(`Sorted students for ${subCategory}:`);
+            sortedStudents.forEach((s, i) => {
+                const marksInfo = subCategory === 'GNSPT' ? `Marks: ${s.sptMarks}` : '';
+                console.log(`${i+1}. ${s.applicationNumber}: ${marksInfo} CRL: ${s.jeeCRL}`);
             });
 
             try {
@@ -143,22 +162,6 @@ export async function runGeneralSubcategoryAllocation(students, round) {
                 console.error(`Error allocating seats for ${subCategory}:`, error);
                 continue; // Continue with next subcategory
             }
-
-            // Check remaining seats after allocation (for verification)
-            const remainingSeats = await prisma.seatMatrix.findMany({
-                where: {
-                    departmentId: {
-                        in: ALL_DEPARTMENTS
-                    },
-                    category: 'GEN',
-                    subCategory: subCategory,
-                }
-            });
-
-            console.log(`Remaining seats after ${subCategory} allocation:`);
-            remainingSeats.forEach(seat => {
-                console.log(`- ${seat.departmentId}: ${seat.totalSeats} seats`);
-            });
         }
 
         return results;
@@ -182,10 +185,10 @@ function getSortCriteriaForSubcategory(subCategory) {
     }
     
     switch(subCategory) {
-        case 'GNPWD': return 'rank';
-        case 'GNSPT': return 'marks';
+        case 'GNPWD': return 'pwdRank';
+        case 'GNSPT': return 'sptMarks';
         case 'GNCDP':
-        case 'GNCPF': return 'priority';
+        case 'GNCPF': return 'cdpPriority';
         default: return 'rank';
     }
 }

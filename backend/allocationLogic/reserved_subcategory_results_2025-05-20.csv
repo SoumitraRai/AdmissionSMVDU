@@ -1,0 +1,7 @@
+ApplicationNumber,Category,SubCategory,JEE_Rank,Category_Rank,Special_Criteria,Previous_Department,Previous_Choice,New_Department,New_Choice,Status,Reason
+20250000992,EWS,EWSSPT,671217,67121,,None,None,cs,1,Success,
+20250000557,SC,SCCPF,667577,667577,10000000,None,2,,,Failed,No seats available in SC-SCCPF
+20250000288,SC,SCCPF,1023329,102332,6,None,2,,,Failed,No seats available in SC-SCCPF
+20250000581,OBC,OBCSPT,297461,29746,20,None,7,,,Failed,No seats available in OBC-OBCSPT
+20250000752,OBC,OBCSPT,764518,76451,23,None,None,,,Failed,No seats available in OBC-OBCSPT
+20250001044,OBC,OBCCPF,272711,27271,8,None,2,,,Failed,No seats available in OBC-OBCCPF
