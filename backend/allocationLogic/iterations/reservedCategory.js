@@ -139,6 +139,7 @@
 // reservedCategory.js (updated)
 import allocateSeats from '../allocateSeats.js';
 import { categories } from '../categories.js';
+import { runUpgradeAllocation } from './newInitialAllocation.js';
 
 export async function runReservedCategoryAllocation(students, round) {
     const results = {
@@ -185,6 +186,10 @@ export async function runReservedCategoryAllocation(students, round) {
             failed: categoryResult?.failures?.length || 0,
             vacated: categoryResult?.vacated?.length || 0
         });
+
+        // 🟢 Run upgrade after this category allocation
+        console.log(`Running upgrade allocation after ${category} category...`);
+        await runUpgradeAllocation(round);
     }
 
     return results;

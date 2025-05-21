@@ -1,6 +1,7 @@
 import allocateSeats from '../allocateSeats.js';
 import { categories } from '../categories.js';
 import { PrismaClient } from '../prisma/generated/prisma/index.js';
+import { runUpgradeAllocation } from './newInitialAllocation.js';
 
 const prisma = new PrismaClient();
 
@@ -49,10 +50,8 @@ export async function runReservedSubcategoryAllocation(students, round) {
 
                 // Filter students eligible for this subcategory
                 const eligibleStudents = categoryStudents.filter(s => {
-                    // Check if student belongs to this subcategory
                     if (s.subCategory !== subCategory) return false;
-                    
-                    // Skip students who already have any 1st choice allocation
+
                     if (s.allocations && s.allocations.length > 0) {
                         const hasFirstChoice = s.allocations.some(a => a.choiceNumber === 1);
                         if (hasFirstChoice) {
@@ -60,14 +59,13 @@ export async function runReservedSubcategoryAllocation(students, round) {
                             return false;
                         }
                     }
-                    
+
                     return true;
                 });
 
-                // Debug: Print eligible students
                 console.log(`Eligible students for ${category}-${subCategory}:`);
                 eligibleStudents.forEach(s => {
-                    const allocs = s.allocations?.map(a => 
+                    const allocs = s.allocations?.map(a =>
                         `${a.departmentId} (Choice ${a.choiceNumber})`
                     ).join(', ') || 'None';
                     const specialInfo = getStudentSpecialInfo(s, subCategory);
@@ -81,7 +79,6 @@ export async function runReservedSubcategoryAllocation(students, round) {
 
                 console.log(`Found ${eligibleStudents.length} eligible students in ${category}-${subCategory}`);
 
-                // Get available seats for this subcategory (for logging)
                 const availableSeats = await prisma.seatMatrix.findMany({
                     where: {
                         departmentId: { in: ALL_DEPARTMENTS },
@@ -106,22 +103,18 @@ export async function runReservedSubcategoryAllocation(students, round) {
                     continue;
                 }
 
-                // Get subcategory-specific sorting criteria
                 const sortCriteria = getSortCriteriaForReservedSubcategory(category, subCategory);
                 console.log(`Using sort criteria: ${sortCriteria} for ${category}-${subCategory}`);
 
-                // Sort students by the appropriate criteria
                 const sortedStudents = sortStudentsForReservedSubcategory(eligibleStudents, sortCriteria);
 
-                // Debug: Print sorted students
                 console.log(`Sorted students for ${category}-${subCategory}:`);
                 sortedStudents.forEach((s, i) => {
                     const specialInfo = getStudentSpecialInfo(s, subCategory);
-                    console.log(`${i+1}. ${s.applicationNumber}: ${specialInfo} CRL: ${s.jeeCRL}`);
+                    console.log(`${i + 1}. ${s.applicationNumber}: ${specialInfo} CRL: ${s.jeeCRL}`);
                 });
 
                 try {
-                    // Run allocation for this subcategory
                     const result = await allocateSeats(sortedStudents, {
                         category,
                         subCategory,
@@ -132,7 +125,6 @@ export async function runReservedSubcategoryAllocation(students, round) {
                         allowVacate: true
                     });
 
-                    // Merge results
                     if (Array.isArray(result?.success)) results.success.push(...result.success);
                     if (Array.isArray(result?.failures)) results.failures.push(...result.failures);
                     if (Array.isArray(result?.vacated)) results.vacated.push(...result.vacated);
@@ -142,6 +134,10 @@ export async function runReservedSubcategoryAllocation(students, round) {
                         failed: result.failures?.length || 0,
                         vacated: result.vacated?.length || 0
                     });
+
+                    // 🔁 Run upgrade allocation after each subcategory
+                    await runUpgradeAllocation(round);
+
                 } catch (error) {
                     console.error(`Error allocating seats for ${category}-${subCategory}:`, error);
                     continue;
@@ -163,35 +159,27 @@ export async function runReservedSubcategoryAllocation(students, round) {
 }
 
 function getSortCriteriaForReservedSubcategory(category, subCategory) {
-    // Handle specific subcategory sorting rules
-    if (subCategory.endsWith('SPT')) return 'sptMarks';      // Sports quota (higher marks better)
-    if (subCategory.endsWith('PWD')) return 'pwdRank';       // PWD (lower rank better)
-    if (subCategory.endsWith('CPF')) return 'cdpPriority';   // Faculty children (lower priority better)
-    if (subCategory.endsWith('CDP')) return 'rank';          // Defense (JEE rank)
-    
-    // Default to category rank for other subcategories
+    if (subCategory.endsWith('SPT')) return 'sptMarks';
+    if (subCategory.endsWith('PWD')) return 'pwdRank';
+    if (subCategory.endsWith('CPF')) return 'cdpPriority';
+    if (subCategory.endsWith('CDP')) return 'rank';
     return 'categoryRank';
 }
 
 function sortStudentsForReservedSubcategory(students, criteria) {
     const sorted = [...students];
-    
-    switch(criteria) {
+
+    switch (criteria) {
         case 'sptMarks':
-            // Sports: Higher marks first, then JEE rank for ties
             return sorted.sort((a, b) => b.sptMarks - a.sptMarks || a.jeeCRL - b.jeeCRL);
         case 'pwdRank':
-            // PWD: Lower rank first, then JEE rank for ties
             return sorted.sort((a, b) => a.pwdRank - b.pwdRank || a.jeeCRL - b.jeeCRL);
         case 'cdpPriority':
-            // Faculty children: Lower priority first, then JEE rank
             return sorted.sort((a, b) => a.cdpPriority - b.cdpPriority || a.jeeCRL - b.jeeCRL);
         case 'categoryRank':
-            // Other subcategories: Category rank first, then JEE rank
             return sorted.sort((a, b) => a.categoryRank - b.categoryRank || a.jeeCRL - b.jeeCRL);
         case 'rank':
         default:
-            // Default: JEE rank only
             return sorted.sort((a, b) => a.jeeCRL - b.jeeCRL);
     }
 }
