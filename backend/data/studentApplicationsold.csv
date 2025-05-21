@@ -1,8 +1,0 @@
-applicationNumber,studentName,fatherMotherName,phoneNumber,email,jeeCRL,category,categoryRank,courseChoice1,courseChoice2
-APP001,John Doe,"Michael Doe, Sarah Doe",1234567890,john.doe@example.com,100,GEN,0,Computer Science,Mechanical Engineering
-APP002,Jane Smith,"Robert Smith, Emily Smith",9876543210,jane.smith@example.com,150,OBC,20,Mechanical Engineering,Computer Science
-APP003,Sam Wilson,"David Wilson, Helen Wilson",5555555555,sam.wilson@example.com,200,OBC,35,Mechanical Engineering,Computer Science
-APP004,Emily Chen,"David Wilson, Helen Wilson",5555555555,sam.wilson@example.com,180,EWS,200,Computer Science,Mechanical Engineering
-APP005,Ali Khan,"David Wilson, Helen Wilson",5555555555,sam.wilson@example.com,300,OBC,55,Mechanical Engineering,Computer Science
-APP006,Neha Verma,"David Wilson, Helen Wilson",5555555555,sam.wilson@example.com,25,EWS,30,Mechanical Engineering,Computer Science
-APP007,Riya,"David Wilson, Helen Wilson",5555555555,sam.wilson@example.com,80,GEN,0,Computer Science,Mechanical Engineering
