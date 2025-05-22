@@ -5,9 +5,10 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 
+// 🔧 FIXED: No more incrementing totalSeats!
 async function releaseFloatingSeats(round) {
     console.log('\n=== Releasing Floating Seats ===');
-    
+
     try {
         const floatingSeats = await prisma.allocatedSeat.findMany({
             where: {
@@ -22,30 +23,19 @@ async function releaseFloatingSeats(round) {
 
         console.log(`Found ${floatingSeats.length} floating seats to release`);
 
-        const released = await prisma.$transaction(async (tx) => {
-            const releases = [];
-            
-            for (const seat of floatingSeats) {
-                await tx.seatMatrix.updateMany({
-                    where: {
-                        departmentId: seat.departmentId,
-                        category: seat.category,
-                        subCategory: seat.subCategory
-                    },
-                    data: {
-                        totalSeats: { increment: 1 }
-                    }
-                });
-                
-                releases.push({
-                    department: seat.department.name,
-                    category: seat.category,
-                    subCategory: seat.subCategory,
-                    student: seat.student.applicationNumber
-                });
-            }
-            return releases;
-        });
+        const released = [];
+
+        // No need for a transaction unless you're modifying DB
+        for (const seat of floatingSeats) {
+            // ❌ DO NOT increment totalSeats
+            // ✔ Optionally log the seat release
+            released.push({
+                department: seat.department.name,
+                category: seat.category,
+                subCategory: seat.subCategory,
+                student: seat.student.applicationNumber
+            });
+        }
 
         console.log('Released seats summary:', {
             total: released.length,
