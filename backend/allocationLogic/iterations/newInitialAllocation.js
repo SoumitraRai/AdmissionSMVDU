@@ -5,197 +5,179 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 
-// Add new helper function for releasing floating seats
 async function releaseFloatingSeats(round) {
-  console.log('\n=== Releasing Floating Seats ===');
-  
-  // Find all previous round allocations that weren't first choice
-  const floatingSeats = await prisma.allocatedSeat.findMany({
-    where: {
-      allocationRound: round - 1,
-      choiceNumber: { not: 1 }  // Exclude first choice allocations (frozen)
-    },
-    include: {
-      department: true
-    }
-  });
-
-  console.log(`Found ${floatingSeats.length} seats to release`);
-
-  // Release these seats back to the seat matrix in a transaction
-  const released = await prisma.$transaction(async (tx) => {
-    const releases = [];
+    console.log('\n=== Releasing Floating Seats ===');
     
-    for (const seat of floatingSeats) {
-      const release = await tx.seatMatrix.updateMany({
-        where: {
-          departmentId: seat.departmentId,
-          category: seat.category,
-          subCategory: seat.subCategory
-        },
-        data: {
-          totalSeats: { increment: 1 }
-        }
-      });
-      releases.push({
-        department: seat.department.name,
-        category: seat.category,
-        subCategory: seat.subCategory
-      });
+    try {
+        const floatingSeats = await prisma.allocatedSeat.findMany({
+            where: {
+                allocationRound: round - 1,
+                choiceNumber: { not: 1 }
+            },
+            include: {
+                department: true,
+                student: true
+            }
+        });
+
+        console.log(`Found ${floatingSeats.length} floating seats to release`);
+
+        const released = await prisma.$transaction(async (tx) => {
+            const releases = [];
+            
+            for (const seat of floatingSeats) {
+                await tx.seatMatrix.updateMany({
+                    where: {
+                        departmentId: seat.departmentId,
+                        category: seat.category,
+                        subCategory: seat.subCategory
+                    },
+                    data: {
+                        totalSeats: { increment: 1 }
+                    }
+                });
+                
+                releases.push({
+                    department: seat.department.name,
+                    category: seat.category,
+                    subCategory: seat.subCategory,
+                    student: seat.student.applicationNumber
+                });
+            }
+            return releases;
+        });
+
+        console.log('Released seats summary:', {
+            total: released.length,
+            byDepartment: released.reduce((acc, r) => {
+                acc[r.department] = (acc[r.department] || 0) + 1;
+                return acc;
+            }, {})
+        });
+
+        return floatingSeats;
+    } catch (error) {
+        console.error('Error releasing floating seats:', error);
+        throw error;
     }
-    return releases;
-  });
-
-  console.log('Released seats:', {
-    total: released.length,
-    byDepartment: released.reduce((acc, r) => {
-      acc[r.department] = (acc[r.department] || 0) + 1;
-      return acc;
-    }, {})
-  });
-
-  return floatingSeats;
 }
 
 export async function runUpgradeAllocation(round, options = {}) {
-  console.log('\n=== Starting Upgrade Allocation (Round ' + round + ') ===');
+    console.log(`\n=== Starting Upgrade Allocation (Round ${round}) ===`);
+    console.log(`Timestamp: ${new Date().toISOString()}`);
 
-  try {
-    // First, release all floating seats
-    await releaseFloatingSeats(round);
+    try {
+        // Release floating seats from previous round
+        await releaseFloatingSeats(round);
 
-    // Fetch all students and their allocations from the previous round
-    const students = await prisma.studentApplication.findMany({
-      include: {
-        allocations: {
-          where: {
-            allocationRound: round - 1,
-          },
-          orderBy: {
-            allocatedAt: 'desc',
-          },
-          take: 1,
-        },
-      },
-    });
+        // Fetch all students with their previous allocations
+        const students = await prisma.studentApplication.findMany({
+            include: {
+                allocations: {
+                    where: { allocationRound: round - 1 },
+                    orderBy: { allocatedAt: 'desc' },
+                    take: 1
+                }
+            }
+        });
 
-    // Prepare students with their latest allocation or null
-    const transformedStudents = students.map((student) => ({
-      ...student,
-      allocatedSeat: student.allocations[0] || null,
-    }));
+        console.log(`Processing ${students.length} total students`);
 
-    // Filter students who either:
-    // - are unallocated, or
-    // - didn't get their 1st choice (eligible for upgrade check)
-    const upgradeCandidates = transformedStudents.filter((student) => {
-      if (!student.allocatedSeat) {
-        console.log(`Student ${student.applicationNumber}: Unallocated - Eligible`);
-        return true;  // Unallocated students are always eligible
-      }
+        // Transform students data
+        const transformedStudents = students.map(student => ({
+            ...student,
+            allocatedSeat: student.allocations[0] || null
+        }));
 
-      if (student.allocatedSeat.choiceNumber === 1) {
-        console.log(`Student ${student.applicationNumber}: Has first choice - Frozen`);
-        return false;  // First choice students are frozen
-      }
+        // Filter upgrade candidates
+        const upgradeCandidates = transformedStudents.filter(student => {
+            if (!student.allocatedSeat) {
+                console.log(`${student.applicationNumber}: Unallocated - Eligible`);
+                return true;
+            }
+            if (student.allocatedSeat.choiceNumber === 1) {
+                console.log(`${student.applicationNumber}: First choice - Frozen`);
+                return false;
+            }
+            console.log(`${student.applicationNumber}: Choice #${student.allocatedSeat.choiceNumber} - Floating`);
+            return true;
+        });
 
-      console.log(`Student ${student.applicationNumber}: Has choice #${student.allocatedSeat.choiceNumber} - Floating`);
-      return true;  // All other allocated students are floating
-    });
+        // Sort by JEE rank
+        const sortedStudents = [...upgradeCandidates].sort((a, b) => a.jeeCRL - b.jeeCRL);
 
-    // Sort candidates by JEE rank ascending
-    const sortedStudents = [...upgradeCandidates].sort((a, b) => a.jeeCRL - b.jeeCRL);
+        // Prepare students for allocation
+        const studentsForAllocation = sortedStudents.map(student => {
+            const filteredChoices = [
+                student.courseChoice1,
+                student.courseChoice2,
+                student.courseChoice3,
+                student.courseChoice4,
+                student.courseChoice5,
+                student.courseChoice6,
+                student.courseChoice7
+            ].filter(Boolean);
 
-    // Prepare students with filtered choices and GEN-GNGN category
-    const preparedStudents = sortedStudents.map((student) => {
-      const filteredChoices = [
-        student.courseChoice1,
-        student.courseChoice2,
-        student.courseChoice3,
-        student.courseChoice4,
-        student.courseChoice5,
-        student.courseChoice6,
-        student.courseChoice7,
-      ].filter(Boolean);
+            // For allocated students, only keep better choices
+            const effectiveChoices = student.allocatedSeat
+                ? filteredChoices.slice(0, student.allocatedSeat.choiceNumber - 1)
+                : filteredChoices;
 
-      return {
-        ...student,
-        courseChoices: filteredChoices, // store as array for easier handling below
-        category: 'GEN',
-        subCategory: 'GNGN',
-        allocatedSeat: student.allocatedSeat,
-      };
-    });
+            return {
+                ...student,
+                courseChoice1: effectiveChoices[0] || null,
+                courseChoice2: effectiveChoices[1] || null,
+                courseChoice3: effectiveChoices[2] || null,
+                courseChoice4: effectiveChoices[3] || null,
+                courseChoice5: effectiveChoices[4] || null,
+                courseChoice6: effectiveChoices[5] || null,
+                courseChoice7: effectiveChoices[6] || null,
+                category: 'GEN',
+                subCategory: 'GNGN'
+            };
+        }).filter(student => 
+            !student.allocatedSeat || student.courseChoice1 !== null
+        );
 
-    // Now, filter out students who can't be upgraded to better preferences:
-    // For allocated students, only keep choices better than current allocated seat choice number
-    const studentsForAllocation = preparedStudents.filter((student) => {
-      if (!student.allocatedSeat) {
-        // Unallocated students get all choices
-        return true;
-      }
-      // For allocated students, check if better choices exist
-      // Better choice means choiceNumber < allocatedSeat.choiceNumber
-      const betterChoices = student.courseChoices.filter(
-        (_, index) => index + 1 < student.allocatedSeat.choiceNumber
-      );
-      return betterChoices.length > 0;
-    }).map((student) => {
-      // For allocated students, reduce their choices only to better ones
-      if (!student.allocatedSeat) return student;
+        console.log(`Prepared ${studentsForAllocation.length} students for allocation`);
 
-      return {
-        ...student,
-        courseChoice1: student.courseChoices[0],
-        courseChoice2: student.courseChoices[1],
-        courseChoice3: student.courseChoices[2],
-        courseChoice4: student.courseChoices[3],
-        courseChoice5: student.courseChoices[4],
-        courseChoice6: student.courseChoices[5],
-        courseChoice7: student.courseChoices[6],
-        courseChoices: undefined, // remove helper
-      };
-    });
+        // Call allocation with updated options structure
+        const result = await allocateSeats(studentsForAllocation, {
+            round,
+            mode: 'upgrade',
+            respectFreeze: true,
+            handleFloat: true,
+            allowChoicePriority: true,
+            options: {
+                checkRanking: true,
+                tryAllChoices: true,
+                allowUpgrade: true
+            }
+        });
 
-    // For unallocated students, map their choices fully too
-    studentsForAllocation.forEach((student) => {
-      if (!student.courseChoice1) {
-        student.courseChoice1 = student.courseChoices?.[0] || null;
-        student.courseChoice2 = student.courseChoices?.[1] || null;
-        student.courseChoice3 = student.courseChoices?.[2] || null;
-        student.courseChoice4 = student.courseChoices?.[3] || null;
-        student.courseChoice5 = student.courseChoices?.[4] || null;
-        student.courseChoice6 = student.courseChoices?.[5] || null;
-        student.courseChoice7 = student.courseChoices?.[6] || null;
-        student.courseChoices = undefined;
-      }
-    });
+        console.log('\n=== Allocation Results ===');
+        console.log(`Successful allocations: ${result.success?.length || 0}`);
+        console.log(`Failed allocations: ${result.failures?.length || 0}`);
 
-    // Call allocateSeats only with students who need upgrade or allocation
-    return await allocateSeats(studentsForAllocation, {
-      round,
-      mode: 'upgrade',
-      allowChoicePriority: true,
-      options: {
-        checkRanking: true,
-        tryAllChoices: true,
-        allowUpgrade: true,
-        respectFreeze: true,  // New flag
-        handleFloat: true,     // New flag
-        ...options
-      }
-    });
-  } catch (error) {
-    console.error('Database operation failed:', error);
-    throw error;
-  } finally {
-    await prisma.$disconnect();
-  }
+        return result;
+
+    } catch (error) {
+        console.error('Allocation failed:', error);
+        throw error;
+    } finally {
+        await prisma.$disconnect();
+    }
 }
-runUpgradeAllocation(2)
-  .then(() => {
-    console.log('Upgrade allocation completed successfully');
-  })
-  .catch((error) => {
-    console.error('Error during upgrade allocation:', error);
-  });
+
+// Execute the allocation
+const round = 2;
+
+runUpgradeAllocation(round)
+    .then(result => {
+        console.log('Upgrade allocation completed successfully');
+        console.log('Final results:', result);
+    })
+    .catch(error => {
+        console.error('Fatal error during upgrade allocation:', error);
+        process.exit(1);
+    });
