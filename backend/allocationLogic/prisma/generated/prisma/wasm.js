@@ -168,6 +168,16 @@ exports.Prisma.AllocatedSeatScalarFieldEnum = {
   jeeRank: 'jeeRank'
 };
 
+exports.Prisma.ErrorLogScalarFieldEnum = {
+  id: 'id',
+  timestamp: 'timestamp',
+  error: 'error',
+  stack: 'stack',
+  round: 'round',
+  mode: 'mode',
+  category: 'category'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -188,7 +198,8 @@ exports.Prisma.ModelName = {
   Department: 'Department',
   StudentApplication: 'StudentApplication',
   SeatMatrix: 'SeatMatrix',
-  AllocatedSeat: 'AllocatedSeat'
+  AllocatedSeat: 'AllocatedSeat',
+  ErrorLog: 'ErrorLog'
 };
 
 /**

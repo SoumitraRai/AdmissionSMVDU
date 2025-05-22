@@ -5,10 +5,65 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 
-export async function runUpgradeAllocation(round) {
+// Add new helper function for releasing floating seats
+async function releaseFloatingSeats(round) {
+  console.log('\n=== Releasing Floating Seats ===');
+  
+  // Find all previous round allocations that weren't first choice
+  const floatingSeats = await prisma.allocatedSeat.findMany({
+    where: {
+      allocationRound: round - 1,
+      choiceNumber: { not: 1 }  // Exclude first choice allocations (frozen)
+    },
+    include: {
+      department: true
+    }
+  });
+
+  console.log(`Found ${floatingSeats.length} seats to release`);
+
+  // Release these seats back to the seat matrix in a transaction
+  const released = await prisma.$transaction(async (tx) => {
+    const releases = [];
+    
+    for (const seat of floatingSeats) {
+      const release = await tx.seatMatrix.updateMany({
+        where: {
+          departmentId: seat.departmentId,
+          category: seat.category,
+          subCategory: seat.subCategory
+        },
+        data: {
+          totalSeats: { increment: 1 }
+        }
+      });
+      releases.push({
+        department: seat.department.name,
+        category: seat.category,
+        subCategory: seat.subCategory
+      });
+    }
+    return releases;
+  });
+
+  console.log('Released seats:', {
+    total: released.length,
+    byDepartment: released.reduce((acc, r) => {
+      acc[r.department] = (acc[r.department] || 0) + 1;
+      return acc;
+    }, {})
+  });
+
+  return floatingSeats;
+}
+
+export async function runUpgradeAllocation(round, options = {}) {
   console.log('\n=== Starting Upgrade Allocation (Round ' + round + ') ===');
 
   try {
+    // First, release all floating seats
+    await releaseFloatingSeats(round);
+
     // Fetch all students and their allocations from the previous round
     const students = await prisma.studentApplication.findMany({
       include: {
@@ -33,9 +88,20 @@ export async function runUpgradeAllocation(round) {
     // Filter students who either:
     // - are unallocated, or
     // - didn't get their 1st choice (eligible for upgrade check)
-    const upgradeCandidates = transformedStudents.filter(
-      (student) => !student.allocatedSeat || student.allocatedSeat.choiceNumber !== 1
-    );
+    const upgradeCandidates = transformedStudents.filter((student) => {
+      if (!student.allocatedSeat) {
+        console.log(`Student ${student.applicationNumber}: Unallocated - Eligible`);
+        return true;  // Unallocated students are always eligible
+      }
+
+      if (student.allocatedSeat.choiceNumber === 1) {
+        console.log(`Student ${student.applicationNumber}: Has first choice - Frozen`);
+        return false;  // First choice students are frozen
+      }
+
+      console.log(`Student ${student.applicationNumber}: Has choice #${student.allocatedSeat.choiceNumber} - Floating`);
+      return true;  // All other allocated students are floating
+    });
 
     // Sort candidates by JEE rank ascending
     const sortedStudents = [...upgradeCandidates].sort((a, b) => a.jeeCRL - b.jeeCRL);
@@ -114,7 +180,10 @@ export async function runUpgradeAllocation(round) {
         checkRanking: true,
         tryAllChoices: true,
         allowUpgrade: true,
-      },
+        respectFreeze: true,  // New flag
+        handleFloat: true,     // New flag
+        ...options
+      }
     });
   } catch (error) {
     console.error('Database operation failed:', error);
