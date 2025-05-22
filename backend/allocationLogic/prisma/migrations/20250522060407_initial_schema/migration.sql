@@ -58,8 +58,24 @@ CREATE TABLE "AllocatedSeat" (
     CONSTRAINT "AllocatedSeat_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "ErrorLog" (
+    "id" SERIAL NOT NULL,
+    "timestamp" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "error" TEXT NOT NULL,
+    "stack" TEXT,
+    "round" INTEGER NOT NULL,
+    "mode" VARCHAR(255) NOT NULL,
+    "category" VARCHAR(255),
+
+    CONSTRAINT "ErrorLog_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "SeatMatrix_departmentId_category_subCategory_key" ON "SeatMatrix"("departmentId", "category", "subCategory");
+
+-- CreateIndex
+CREATE INDEX "ErrorLog_timestamp_idx" ON "ErrorLog"("timestamp");
 
 -- AddForeignKey
 ALTER TABLE "SeatMatrix" ADD CONSTRAINT "SeatMatrix_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "Department"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

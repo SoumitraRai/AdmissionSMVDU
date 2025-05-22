@@ -33,6 +33,11 @@ export type SeatMatrix = $Result.DefaultSelection<Prisma.$SeatMatrixPayload>
  * 
  */
 export type AllocatedSeat = $Result.DefaultSelection<Prisma.$AllocatedSeatPayload>
+/**
+ * Model ErrorLog
+ * 
+ */
+export type ErrorLog = $Result.DefaultSelection<Prisma.$ErrorLogPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -198,6 +203,16 @@ export class PrismaClient<
     * ```
     */
   get allocatedSeat(): Prisma.AllocatedSeatDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.errorLog`: Exposes CRUD operations for the **ErrorLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ErrorLogs
+    * const errorLogs = await prisma.errorLog.findMany()
+    * ```
+    */
+  get errorLog(): Prisma.ErrorLogDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -641,7 +656,8 @@ export namespace Prisma {
     Department: 'Department',
     StudentApplication: 'StudentApplication',
     SeatMatrix: 'SeatMatrix',
-    AllocatedSeat: 'AllocatedSeat'
+    AllocatedSeat: 'AllocatedSeat',
+    ErrorLog: 'ErrorLog'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -660,7 +676,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "department" | "studentApplication" | "seatMatrix" | "allocatedSeat"
+      modelProps: "department" | "studentApplication" | "seatMatrix" | "allocatedSeat" | "errorLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -960,6 +976,80 @@ export namespace Prisma {
           }
         }
       }
+      ErrorLog: {
+        payload: Prisma.$ErrorLogPayload<ExtArgs>
+        fields: Prisma.ErrorLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ErrorLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ErrorLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ErrorLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ErrorLogPayload>
+          }
+          findFirst: {
+            args: Prisma.ErrorLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ErrorLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ErrorLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ErrorLogPayload>
+          }
+          findMany: {
+            args: Prisma.ErrorLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ErrorLogPayload>[]
+          }
+          create: {
+            args: Prisma.ErrorLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ErrorLogPayload>
+          }
+          createMany: {
+            args: Prisma.ErrorLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ErrorLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ErrorLogPayload>[]
+          }
+          delete: {
+            args: Prisma.ErrorLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ErrorLogPayload>
+          }
+          update: {
+            args: Prisma.ErrorLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ErrorLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.ErrorLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ErrorLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ErrorLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ErrorLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.ErrorLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ErrorLogPayload>
+          }
+          aggregate: {
+            args: Prisma.ErrorLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateErrorLog>
+          }
+          groupBy: {
+            args: Prisma.ErrorLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ErrorLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ErrorLogCountArgs<ExtArgs>
+            result: $Utils.Optional<ErrorLogCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1048,6 +1138,7 @@ export namespace Prisma {
     studentApplication?: StudentApplicationOmit
     seatMatrix?: SeatMatrixOmit
     allocatedSeat?: AllocatedSeatOmit
+    errorLog?: ErrorLogOmit
   }
 
   /* Types for Logging */
@@ -5847,6 +5938,1065 @@ export namespace Prisma {
 
 
   /**
+   * Model ErrorLog
+   */
+
+  export type AggregateErrorLog = {
+    _count: ErrorLogCountAggregateOutputType | null
+    _avg: ErrorLogAvgAggregateOutputType | null
+    _sum: ErrorLogSumAggregateOutputType | null
+    _min: ErrorLogMinAggregateOutputType | null
+    _max: ErrorLogMaxAggregateOutputType | null
+  }
+
+  export type ErrorLogAvgAggregateOutputType = {
+    id: number | null
+    round: number | null
+  }
+
+  export type ErrorLogSumAggregateOutputType = {
+    id: number | null
+    round: number | null
+  }
+
+  export type ErrorLogMinAggregateOutputType = {
+    id: number | null
+    timestamp: Date | null
+    error: string | null
+    stack: string | null
+    round: number | null
+    mode: string | null
+    category: string | null
+  }
+
+  export type ErrorLogMaxAggregateOutputType = {
+    id: number | null
+    timestamp: Date | null
+    error: string | null
+    stack: string | null
+    round: number | null
+    mode: string | null
+    category: string | null
+  }
+
+  export type ErrorLogCountAggregateOutputType = {
+    id: number
+    timestamp: number
+    error: number
+    stack: number
+    round: number
+    mode: number
+    category: number
+    _all: number
+  }
+
+
+  export type ErrorLogAvgAggregateInputType = {
+    id?: true
+    round?: true
+  }
+
+  export type ErrorLogSumAggregateInputType = {
+    id?: true
+    round?: true
+  }
+
+  export type ErrorLogMinAggregateInputType = {
+    id?: true
+    timestamp?: true
+    error?: true
+    stack?: true
+    round?: true
+    mode?: true
+    category?: true
+  }
+
+  export type ErrorLogMaxAggregateInputType = {
+    id?: true
+    timestamp?: true
+    error?: true
+    stack?: true
+    round?: true
+    mode?: true
+    category?: true
+  }
+
+  export type ErrorLogCountAggregateInputType = {
+    id?: true
+    timestamp?: true
+    error?: true
+    stack?: true
+    round?: true
+    mode?: true
+    category?: true
+    _all?: true
+  }
+
+  export type ErrorLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ErrorLog to aggregate.
+     */
+    where?: ErrorLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ErrorLogs to fetch.
+     */
+    orderBy?: ErrorLogOrderByWithRelationInput | ErrorLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ErrorLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ErrorLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ErrorLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ErrorLogs
+    **/
+    _count?: true | ErrorLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ErrorLogAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ErrorLogSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ErrorLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ErrorLogMaxAggregateInputType
+  }
+
+  export type GetErrorLogAggregateType<T extends ErrorLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateErrorLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateErrorLog[P]>
+      : GetScalarType<T[P], AggregateErrorLog[P]>
+  }
+
+
+
+
+  export type ErrorLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ErrorLogWhereInput
+    orderBy?: ErrorLogOrderByWithAggregationInput | ErrorLogOrderByWithAggregationInput[]
+    by: ErrorLogScalarFieldEnum[] | ErrorLogScalarFieldEnum
+    having?: ErrorLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ErrorLogCountAggregateInputType | true
+    _avg?: ErrorLogAvgAggregateInputType
+    _sum?: ErrorLogSumAggregateInputType
+    _min?: ErrorLogMinAggregateInputType
+    _max?: ErrorLogMaxAggregateInputType
+  }
+
+  export type ErrorLogGroupByOutputType = {
+    id: number
+    timestamp: Date
+    error: string
+    stack: string | null
+    round: number
+    mode: string
+    category: string | null
+    _count: ErrorLogCountAggregateOutputType | null
+    _avg: ErrorLogAvgAggregateOutputType | null
+    _sum: ErrorLogSumAggregateOutputType | null
+    _min: ErrorLogMinAggregateOutputType | null
+    _max: ErrorLogMaxAggregateOutputType | null
+  }
+
+  type GetErrorLogGroupByPayload<T extends ErrorLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ErrorLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ErrorLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ErrorLogGroupByOutputType[P]>
+            : GetScalarType<T[P], ErrorLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ErrorLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    timestamp?: boolean
+    error?: boolean
+    stack?: boolean
+    round?: boolean
+    mode?: boolean
+    category?: boolean
+  }, ExtArgs["result"]["errorLog"]>
+
+  export type ErrorLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    timestamp?: boolean
+    error?: boolean
+    stack?: boolean
+    round?: boolean
+    mode?: boolean
+    category?: boolean
+  }, ExtArgs["result"]["errorLog"]>
+
+  export type ErrorLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    timestamp?: boolean
+    error?: boolean
+    stack?: boolean
+    round?: boolean
+    mode?: boolean
+    category?: boolean
+  }, ExtArgs["result"]["errorLog"]>
+
+  export type ErrorLogSelectScalar = {
+    id?: boolean
+    timestamp?: boolean
+    error?: boolean
+    stack?: boolean
+    round?: boolean
+    mode?: boolean
+    category?: boolean
+  }
+
+  export type ErrorLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "error" | "stack" | "round" | "mode" | "category", ExtArgs["result"]["errorLog"]>
+
+  export type $ErrorLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ErrorLog"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      timestamp: Date
+      error: string
+      stack: string | null
+      round: number
+      mode: string
+      category: string | null
+    }, ExtArgs["result"]["errorLog"]>
+    composites: {}
+  }
+
+  type ErrorLogGetPayload<S extends boolean | null | undefined | ErrorLogDefaultArgs> = $Result.GetResult<Prisma.$ErrorLogPayload, S>
+
+  type ErrorLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ErrorLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ErrorLogCountAggregateInputType | true
+    }
+
+  export interface ErrorLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ErrorLog'], meta: { name: 'ErrorLog' } }
+    /**
+     * Find zero or one ErrorLog that matches the filter.
+     * @param {ErrorLogFindUniqueArgs} args - Arguments to find a ErrorLog
+     * @example
+     * // Get one ErrorLog
+     * const errorLog = await prisma.errorLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ErrorLogFindUniqueArgs>(args: SelectSubset<T, ErrorLogFindUniqueArgs<ExtArgs>>): Prisma__ErrorLogClient<$Result.GetResult<Prisma.$ErrorLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ErrorLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ErrorLogFindUniqueOrThrowArgs} args - Arguments to find a ErrorLog
+     * @example
+     * // Get one ErrorLog
+     * const errorLog = await prisma.errorLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ErrorLogFindUniqueOrThrowArgs>(args: SelectSubset<T, ErrorLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ErrorLogClient<$Result.GetResult<Prisma.$ErrorLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ErrorLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ErrorLogFindFirstArgs} args - Arguments to find a ErrorLog
+     * @example
+     * // Get one ErrorLog
+     * const errorLog = await prisma.errorLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ErrorLogFindFirstArgs>(args?: SelectSubset<T, ErrorLogFindFirstArgs<ExtArgs>>): Prisma__ErrorLogClient<$Result.GetResult<Prisma.$ErrorLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ErrorLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ErrorLogFindFirstOrThrowArgs} args - Arguments to find a ErrorLog
+     * @example
+     * // Get one ErrorLog
+     * const errorLog = await prisma.errorLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ErrorLogFindFirstOrThrowArgs>(args?: SelectSubset<T, ErrorLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__ErrorLogClient<$Result.GetResult<Prisma.$ErrorLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ErrorLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ErrorLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ErrorLogs
+     * const errorLogs = await prisma.errorLog.findMany()
+     * 
+     * // Get first 10 ErrorLogs
+     * const errorLogs = await prisma.errorLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const errorLogWithIdOnly = await prisma.errorLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ErrorLogFindManyArgs>(args?: SelectSubset<T, ErrorLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ErrorLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ErrorLog.
+     * @param {ErrorLogCreateArgs} args - Arguments to create a ErrorLog.
+     * @example
+     * // Create one ErrorLog
+     * const ErrorLog = await prisma.errorLog.create({
+     *   data: {
+     *     // ... data to create a ErrorLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends ErrorLogCreateArgs>(args: SelectSubset<T, ErrorLogCreateArgs<ExtArgs>>): Prisma__ErrorLogClient<$Result.GetResult<Prisma.$ErrorLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ErrorLogs.
+     * @param {ErrorLogCreateManyArgs} args - Arguments to create many ErrorLogs.
+     * @example
+     * // Create many ErrorLogs
+     * const errorLog = await prisma.errorLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ErrorLogCreateManyArgs>(args?: SelectSubset<T, ErrorLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ErrorLogs and returns the data saved in the database.
+     * @param {ErrorLogCreateManyAndReturnArgs} args - Arguments to create many ErrorLogs.
+     * @example
+     * // Create many ErrorLogs
+     * const errorLog = await prisma.errorLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ErrorLogs and only return the `id`
+     * const errorLogWithIdOnly = await prisma.errorLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ErrorLogCreateManyAndReturnArgs>(args?: SelectSubset<T, ErrorLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ErrorLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ErrorLog.
+     * @param {ErrorLogDeleteArgs} args - Arguments to delete one ErrorLog.
+     * @example
+     * // Delete one ErrorLog
+     * const ErrorLog = await prisma.errorLog.delete({
+     *   where: {
+     *     // ... filter to delete one ErrorLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ErrorLogDeleteArgs>(args: SelectSubset<T, ErrorLogDeleteArgs<ExtArgs>>): Prisma__ErrorLogClient<$Result.GetResult<Prisma.$ErrorLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ErrorLog.
+     * @param {ErrorLogUpdateArgs} args - Arguments to update one ErrorLog.
+     * @example
+     * // Update one ErrorLog
+     * const errorLog = await prisma.errorLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ErrorLogUpdateArgs>(args: SelectSubset<T, ErrorLogUpdateArgs<ExtArgs>>): Prisma__ErrorLogClient<$Result.GetResult<Prisma.$ErrorLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ErrorLogs.
+     * @param {ErrorLogDeleteManyArgs} args - Arguments to filter ErrorLogs to delete.
+     * @example
+     * // Delete a few ErrorLogs
+     * const { count } = await prisma.errorLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ErrorLogDeleteManyArgs>(args?: SelectSubset<T, ErrorLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ErrorLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ErrorLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ErrorLogs
+     * const errorLog = await prisma.errorLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ErrorLogUpdateManyArgs>(args: SelectSubset<T, ErrorLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ErrorLogs and returns the data updated in the database.
+     * @param {ErrorLogUpdateManyAndReturnArgs} args - Arguments to update many ErrorLogs.
+     * @example
+     * // Update many ErrorLogs
+     * const errorLog = await prisma.errorLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ErrorLogs and only return the `id`
+     * const errorLogWithIdOnly = await prisma.errorLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ErrorLogUpdateManyAndReturnArgs>(args: SelectSubset<T, ErrorLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ErrorLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ErrorLog.
+     * @param {ErrorLogUpsertArgs} args - Arguments to update or create a ErrorLog.
+     * @example
+     * // Update or create a ErrorLog
+     * const errorLog = await prisma.errorLog.upsert({
+     *   create: {
+     *     // ... data to create a ErrorLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ErrorLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ErrorLogUpsertArgs>(args: SelectSubset<T, ErrorLogUpsertArgs<ExtArgs>>): Prisma__ErrorLogClient<$Result.GetResult<Prisma.$ErrorLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ErrorLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ErrorLogCountArgs} args - Arguments to filter ErrorLogs to count.
+     * @example
+     * // Count the number of ErrorLogs
+     * const count = await prisma.errorLog.count({
+     *   where: {
+     *     // ... the filter for the ErrorLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends ErrorLogCountArgs>(
+      args?: Subset<T, ErrorLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ErrorLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ErrorLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ErrorLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ErrorLogAggregateArgs>(args: Subset<T, ErrorLogAggregateArgs>): Prisma.PrismaPromise<GetErrorLogAggregateType<T>>
+
+    /**
+     * Group by ErrorLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ErrorLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ErrorLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ErrorLogGroupByArgs['orderBy'] }
+        : { orderBy?: ErrorLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ErrorLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetErrorLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ErrorLog model
+   */
+  readonly fields: ErrorLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ErrorLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ErrorLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ErrorLog model
+   */
+  interface ErrorLogFieldRefs {
+    readonly id: FieldRef<"ErrorLog", 'Int'>
+    readonly timestamp: FieldRef<"ErrorLog", 'DateTime'>
+    readonly error: FieldRef<"ErrorLog", 'String'>
+    readonly stack: FieldRef<"ErrorLog", 'String'>
+    readonly round: FieldRef<"ErrorLog", 'Int'>
+    readonly mode: FieldRef<"ErrorLog", 'String'>
+    readonly category: FieldRef<"ErrorLog", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ErrorLog findUnique
+   */
+  export type ErrorLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ErrorLog
+     */
+    select?: ErrorLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ErrorLog
+     */
+    omit?: ErrorLogOmit<ExtArgs> | null
+    /**
+     * Filter, which ErrorLog to fetch.
+     */
+    where: ErrorLogWhereUniqueInput
+  }
+
+  /**
+   * ErrorLog findUniqueOrThrow
+   */
+  export type ErrorLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ErrorLog
+     */
+    select?: ErrorLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ErrorLog
+     */
+    omit?: ErrorLogOmit<ExtArgs> | null
+    /**
+     * Filter, which ErrorLog to fetch.
+     */
+    where: ErrorLogWhereUniqueInput
+  }
+
+  /**
+   * ErrorLog findFirst
+   */
+  export type ErrorLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ErrorLog
+     */
+    select?: ErrorLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ErrorLog
+     */
+    omit?: ErrorLogOmit<ExtArgs> | null
+    /**
+     * Filter, which ErrorLog to fetch.
+     */
+    where?: ErrorLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ErrorLogs to fetch.
+     */
+    orderBy?: ErrorLogOrderByWithRelationInput | ErrorLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ErrorLogs.
+     */
+    cursor?: ErrorLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ErrorLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ErrorLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ErrorLogs.
+     */
+    distinct?: ErrorLogScalarFieldEnum | ErrorLogScalarFieldEnum[]
+  }
+
+  /**
+   * ErrorLog findFirstOrThrow
+   */
+  export type ErrorLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ErrorLog
+     */
+    select?: ErrorLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ErrorLog
+     */
+    omit?: ErrorLogOmit<ExtArgs> | null
+    /**
+     * Filter, which ErrorLog to fetch.
+     */
+    where?: ErrorLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ErrorLogs to fetch.
+     */
+    orderBy?: ErrorLogOrderByWithRelationInput | ErrorLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ErrorLogs.
+     */
+    cursor?: ErrorLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ErrorLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ErrorLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ErrorLogs.
+     */
+    distinct?: ErrorLogScalarFieldEnum | ErrorLogScalarFieldEnum[]
+  }
+
+  /**
+   * ErrorLog findMany
+   */
+  export type ErrorLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ErrorLog
+     */
+    select?: ErrorLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ErrorLog
+     */
+    omit?: ErrorLogOmit<ExtArgs> | null
+    /**
+     * Filter, which ErrorLogs to fetch.
+     */
+    where?: ErrorLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ErrorLogs to fetch.
+     */
+    orderBy?: ErrorLogOrderByWithRelationInput | ErrorLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ErrorLogs.
+     */
+    cursor?: ErrorLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ErrorLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ErrorLogs.
+     */
+    skip?: number
+    distinct?: ErrorLogScalarFieldEnum | ErrorLogScalarFieldEnum[]
+  }
+
+  /**
+   * ErrorLog create
+   */
+  export type ErrorLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ErrorLog
+     */
+    select?: ErrorLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ErrorLog
+     */
+    omit?: ErrorLogOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ErrorLog.
+     */
+    data: XOR<ErrorLogCreateInput, ErrorLogUncheckedCreateInput>
+  }
+
+  /**
+   * ErrorLog createMany
+   */
+  export type ErrorLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ErrorLogs.
+     */
+    data: ErrorLogCreateManyInput | ErrorLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ErrorLog createManyAndReturn
+   */
+  export type ErrorLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ErrorLog
+     */
+    select?: ErrorLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ErrorLog
+     */
+    omit?: ErrorLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many ErrorLogs.
+     */
+    data: ErrorLogCreateManyInput | ErrorLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ErrorLog update
+   */
+  export type ErrorLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ErrorLog
+     */
+    select?: ErrorLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ErrorLog
+     */
+    omit?: ErrorLogOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ErrorLog.
+     */
+    data: XOR<ErrorLogUpdateInput, ErrorLogUncheckedUpdateInput>
+    /**
+     * Choose, which ErrorLog to update.
+     */
+    where: ErrorLogWhereUniqueInput
+  }
+
+  /**
+   * ErrorLog updateMany
+   */
+  export type ErrorLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ErrorLogs.
+     */
+    data: XOR<ErrorLogUpdateManyMutationInput, ErrorLogUncheckedUpdateManyInput>
+    /**
+     * Filter which ErrorLogs to update
+     */
+    where?: ErrorLogWhereInput
+    /**
+     * Limit how many ErrorLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ErrorLog updateManyAndReturn
+   */
+  export type ErrorLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ErrorLog
+     */
+    select?: ErrorLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ErrorLog
+     */
+    omit?: ErrorLogOmit<ExtArgs> | null
+    /**
+     * The data used to update ErrorLogs.
+     */
+    data: XOR<ErrorLogUpdateManyMutationInput, ErrorLogUncheckedUpdateManyInput>
+    /**
+     * Filter which ErrorLogs to update
+     */
+    where?: ErrorLogWhereInput
+    /**
+     * Limit how many ErrorLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ErrorLog upsert
+   */
+  export type ErrorLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ErrorLog
+     */
+    select?: ErrorLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ErrorLog
+     */
+    omit?: ErrorLogOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ErrorLog to update in case it exists.
+     */
+    where: ErrorLogWhereUniqueInput
+    /**
+     * In case the ErrorLog found by the `where` argument doesn't exist, create a new ErrorLog with this data.
+     */
+    create: XOR<ErrorLogCreateInput, ErrorLogUncheckedCreateInput>
+    /**
+     * In case the ErrorLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ErrorLogUpdateInput, ErrorLogUncheckedUpdateInput>
+  }
+
+  /**
+   * ErrorLog delete
+   */
+  export type ErrorLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ErrorLog
+     */
+    select?: ErrorLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ErrorLog
+     */
+    omit?: ErrorLogOmit<ExtArgs> | null
+    /**
+     * Filter which ErrorLog to delete.
+     */
+    where: ErrorLogWhereUniqueInput
+  }
+
+  /**
+   * ErrorLog deleteMany
+   */
+  export type ErrorLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ErrorLogs to delete
+     */
+    where?: ErrorLogWhereInput
+    /**
+     * Limit how many ErrorLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ErrorLog without action
+   */
+  export type ErrorLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ErrorLog
+     */
+    select?: ErrorLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ErrorLog
+     */
+    omit?: ErrorLogOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -5918,6 +7068,19 @@ export namespace Prisma {
   };
 
   export type AllocatedSeatScalarFieldEnum = (typeof AllocatedSeatScalarFieldEnum)[keyof typeof AllocatedSeatScalarFieldEnum]
+
+
+  export const ErrorLogScalarFieldEnum: {
+    id: 'id',
+    timestamp: 'timestamp',
+    error: 'error',
+    stack: 'stack',
+    round: 'round',
+    mode: 'mode',
+    category: 'category'
+  };
+
+  export type ErrorLogScalarFieldEnum = (typeof ErrorLogScalarFieldEnum)[keyof typeof ErrorLogScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6321,6 +7484,70 @@ export namespace Prisma {
     jeeRank?: IntWithAggregatesFilter<"AllocatedSeat"> | number
   }
 
+  export type ErrorLogWhereInput = {
+    AND?: ErrorLogWhereInput | ErrorLogWhereInput[]
+    OR?: ErrorLogWhereInput[]
+    NOT?: ErrorLogWhereInput | ErrorLogWhereInput[]
+    id?: IntFilter<"ErrorLog"> | number
+    timestamp?: DateTimeFilter<"ErrorLog"> | Date | string
+    error?: StringFilter<"ErrorLog"> | string
+    stack?: StringNullableFilter<"ErrorLog"> | string | null
+    round?: IntFilter<"ErrorLog"> | number
+    mode?: StringFilter<"ErrorLog"> | string
+    category?: StringNullableFilter<"ErrorLog"> | string | null
+  }
+
+  export type ErrorLogOrderByWithRelationInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    error?: SortOrder
+    stack?: SortOrderInput | SortOrder
+    round?: SortOrder
+    mode?: SortOrder
+    category?: SortOrderInput | SortOrder
+  }
+
+  export type ErrorLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ErrorLogWhereInput | ErrorLogWhereInput[]
+    OR?: ErrorLogWhereInput[]
+    NOT?: ErrorLogWhereInput | ErrorLogWhereInput[]
+    timestamp?: DateTimeFilter<"ErrorLog"> | Date | string
+    error?: StringFilter<"ErrorLog"> | string
+    stack?: StringNullableFilter<"ErrorLog"> | string | null
+    round?: IntFilter<"ErrorLog"> | number
+    mode?: StringFilter<"ErrorLog"> | string
+    category?: StringNullableFilter<"ErrorLog"> | string | null
+  }, "id">
+
+  export type ErrorLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    error?: SortOrder
+    stack?: SortOrderInput | SortOrder
+    round?: SortOrder
+    mode?: SortOrder
+    category?: SortOrderInput | SortOrder
+    _count?: ErrorLogCountOrderByAggregateInput
+    _avg?: ErrorLogAvgOrderByAggregateInput
+    _max?: ErrorLogMaxOrderByAggregateInput
+    _min?: ErrorLogMinOrderByAggregateInput
+    _sum?: ErrorLogSumOrderByAggregateInput
+  }
+
+  export type ErrorLogScalarWhereWithAggregatesInput = {
+    AND?: ErrorLogScalarWhereWithAggregatesInput | ErrorLogScalarWhereWithAggregatesInput[]
+    OR?: ErrorLogScalarWhereWithAggregatesInput[]
+    NOT?: ErrorLogScalarWhereWithAggregatesInput | ErrorLogScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ErrorLog"> | number
+    timestamp?: DateTimeWithAggregatesFilter<"ErrorLog"> | Date | string
+    error?: StringWithAggregatesFilter<"ErrorLog"> | string
+    stack?: StringNullableWithAggregatesFilter<"ErrorLog"> | string | null
+    round?: IntWithAggregatesFilter<"ErrorLog"> | number
+    mode?: StringWithAggregatesFilter<"ErrorLog"> | string
+    category?: StringNullableWithAggregatesFilter<"ErrorLog"> | string | null
+  }
+
   export type DepartmentCreateInput = {
     id: string
     name: string
@@ -6658,6 +7885,73 @@ export namespace Prisma {
     allocatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     choiceNumber?: IntFieldUpdateOperationsInput | number
     jeeRank?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ErrorLogCreateInput = {
+    timestamp?: Date | string
+    error: string
+    stack?: string | null
+    round: number
+    mode: string
+    category?: string | null
+  }
+
+  export type ErrorLogUncheckedCreateInput = {
+    id?: number
+    timestamp?: Date | string
+    error: string
+    stack?: string | null
+    round: number
+    mode: string
+    category?: string | null
+  }
+
+  export type ErrorLogUpdateInput = {
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: StringFieldUpdateOperationsInput | string
+    stack?: NullableStringFieldUpdateOperationsInput | string | null
+    round?: IntFieldUpdateOperationsInput | number
+    mode?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ErrorLogUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: StringFieldUpdateOperationsInput | string
+    stack?: NullableStringFieldUpdateOperationsInput | string | null
+    round?: IntFieldUpdateOperationsInput | number
+    mode?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ErrorLogCreateManyInput = {
+    id?: number
+    timestamp?: Date | string
+    error: string
+    stack?: string | null
+    round: number
+    mode: string
+    category?: string | null
+  }
+
+  export type ErrorLogUpdateManyMutationInput = {
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: StringFieldUpdateOperationsInput | string
+    stack?: NullableStringFieldUpdateOperationsInput | string | null
+    round?: IntFieldUpdateOperationsInput | number
+    mode?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ErrorLogUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    error?: StringFieldUpdateOperationsInput | string
+    stack?: NullableStringFieldUpdateOperationsInput | string | null
+    round?: IntFieldUpdateOperationsInput | number
+    mode?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -7001,6 +8295,46 @@ export namespace Prisma {
     allocationRound?: SortOrder
     choiceNumber?: SortOrder
     jeeRank?: SortOrder
+  }
+
+  export type ErrorLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    error?: SortOrder
+    stack?: SortOrder
+    round?: SortOrder
+    mode?: SortOrder
+    category?: SortOrder
+  }
+
+  export type ErrorLogAvgOrderByAggregateInput = {
+    id?: SortOrder
+    round?: SortOrder
+  }
+
+  export type ErrorLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    error?: SortOrder
+    stack?: SortOrder
+    round?: SortOrder
+    mode?: SortOrder
+    category?: SortOrder
+  }
+
+  export type ErrorLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    error?: SortOrder
+    stack?: SortOrder
+    round?: SortOrder
+    mode?: SortOrder
+    category?: SortOrder
+  }
+
+  export type ErrorLogSumOrderByAggregateInput = {
+    id?: SortOrder
+    round?: SortOrder
   }
 
   export type SeatMatrixCreateNestedManyWithoutDepartmentInput = {

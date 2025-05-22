@@ -42,53 +42,53 @@ ApplicationNumber,JEE_Rank,Department,ChoiceNumber,Status,Reason
 20250000457,152503,ai_robotics,2,Success,
 20250000187,152985,mnc,2,Success,
 20250000318,153171,me,1,Success,
-20250000372,154178,ai_robotics,2,Success,
+20250000372,154178,mnc,3,Success,
 20250000258,154543,ece,2,Success,
 20250000248,154750,ece,2,Success,
-20250000743,161032,ai_robotics,2,Success,
-20250001201,162577,ai_robotics,3,Success,
-20250000713,164694,ai_robotics,2,Success,
-20250000656,167506,ai_robotics,2,Success,
-20250000684,168632,ai_robotics,2,Success,
-20250001024,170457,ai_robotics,2,Success,
-20250000400,171021,ai_robotics,3,Success,
-20250000674,171499,ai_robotics,2,Success,
-20250000671,173094,mnc,2,Success,
-20250000276,174310,ai_robotics,2,Success,
-20250000614,175230,ai_robotics,3,Success,
+20250000743,161032,mnc,3,Success,
+20250001201,162577,mnc,4,Success,
+20250000713,164694,mnc,3,Success,
+20250000656,167506,me,4,Success,
+20250000684,168632,ce,3,Success,
+20250001024,170457,me,4,Success,
+20250000400,171021,ce,4,Success,
+20250000674,171499,ee,5,Success,
+20250000671,173094,ee,4,Success,
+20250000276,174310,ee,4,Success,
+20250000614,175230,ce,4,Success,
 20250000825,177098,ee,3,Success,
 20250000688,177500,ee,3,Success,
-20250000857,180332,ai_robotics,3,Success,
-20250000876,180600,ai_robotics,3,Success,
+20250000857,180332,me,4,Success,
+20250000876,180600,ee,5,Success,
 20250000220,183373,me,1,Success,
-20250000367,185147,mnc,2,Success,
+20250000367,185147,ee,4,Success,
 20250000545,186129,ee,3,Success,
-20250000463,193705,ai_robotics,3,Success,
-20250000336,197678,mnc,2,Success,
+20250000463,193705,ee,4,Success,
+20250000336,197678,me,5,Success,
 20250001142,199741,ee,5,Success,
 20250000880,200033,ee,4,Success,
 20250000216,200466,ee,4,Success,
-20250000309,202296,ee,5,Success,
-20250000185,203085,ee,3,Success,
-20250000357,204653,ee,4,Success,
-20250000623,207576,ee,4,Success,
-20250001012,208271,ee,4,Success,
+20250000309,202296,ce,6,Success,
+20250000185,203085,ce,5,Success,
+20250000357,204653,ce,6,Success,
+20250000623,207576,ce,6,Success,
+20250001012,208271,ce,7,Success,
 20250000277,210890,ce,3,Success,
-20250000378,211350,ee,4,Success,
-20250000804,211826,me,5,Success,
-20250001126,211938,me,6,Success,
-20250000920,219051,me,5,Success,
-20250000789,220630,me,6,Success,
-20250000945,222498,ce,5,Success,
-20250001192,223042,ce,7,Success,
-20250000479,223896,ce,4,Success,
-20250000317,225724,ce,7,Success,
-20250000294,227283,ce,6,Success,
-20250001187,228333,ce,6,Success,
-20250000756,228375,ce,7,Success,
-20250000709,228792,ce,7,Success,
-20250001042,229378,ce,5,Success,
-20250000256,230097,ce,6,Success,
+20250000378,211350,ce,6,Success,
+20250000804,211826,ce,7,Success,
+20250001126,211938,,,Failure,No eligible seats available in any of the choices
+20250000920,219051,,,Failure,No eligible seats available in any of the choices
+20250000789,220630,,,Failure,No eligible seats available in any of the choices
+20250000945,222498,,,Failure,No eligible seats available in any of the choices
+20250001192,223042,,,Failure,No eligible seats available in any of the choices
+20250000479,223896,,,Failure,No eligible seats available in any of the choices
+20250000317,225724,,,Failure,No eligible seats available in any of the choices
+20250000294,227283,,,Failure,No eligible seats available in any of the choices
+20250001187,228333,,,Failure,No eligible seats available in any of the choices
+20250000756,228375,,,Failure,No eligible seats available in any of the choices
+20250000709,228792,,,Failure,No eligible seats available in any of the choices
+20250001042,229378,,,Failure,No eligible seats available in any of the choices
+20250000256,230097,,,Failure,No eligible seats available in any of the choices
 20250000860,230280,,,Failure,No eligible seats available in any of the choices
 20250000211,231056,,,Failure,No eligible seats available in any of the choices
 20250000758,233259,,,Failure,No eligible seats available in any of the choices
@@ -401,6 +401,6 @@ ApplicationNumber,JEE_Rank,Department,ChoiceNumber,Status,Reason
 20250000803,1335184,,,Failure,No eligible seats available in any of the choices
 20250000447,1351537,,,Failure,No eligible seats available in any of the choices
 20250000380,1358226,,,Failure,No eligible seats available in any of the choices
-20250000819,1365895,,,Failure,No eligible seats available in any of the choices
 20250000437,1365895,,,Failure,No eligible seats available in any of the choices
+20250000819,1365895,,,Failure,No eligible seats available in any of the choices
 20250000861,1454287,,,Failure,No eligible seats available in any of the choices

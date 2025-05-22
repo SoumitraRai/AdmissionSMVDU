@@ -70,3 +70,15 @@ model AllocatedSeat {
   choiceNumber    Int
   jeeRank         Int
 }
+
+model ErrorLog {
+  id        Int      @id @default(autoincrement())
+  timestamp DateTime @default(now())
+  error     String   @db.Text
+  stack     String?  @db.Text
+  round     Int
+  mode      String   @db.VarChar(255)
+  category  String?  @db.VarChar(255)
+
+  @@index([timestamp])
+}
