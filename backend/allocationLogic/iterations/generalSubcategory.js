@@ -166,10 +166,11 @@ function getSortCriteriaForSubcategory(subCategory) {
     switch (subCategory) {
         case 'GNPWD': return 'pwdRank';
         case 'GNSPT': return 'sptMarks';
-        case 'GNCDP':
-        case 'GNCPF': return 'cdpPriority';
+        case 'GNCDP': return 'cdpPriority';   // Based on CDP priority
+        case 'GNCPF': return 'rank';          // Based on JEE CRL (rank)
         default: return 'rank';
     }
 }
+
 
 export default runGeneralSubcategoryAllocation;
