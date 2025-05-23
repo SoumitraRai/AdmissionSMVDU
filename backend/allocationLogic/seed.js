@@ -42,16 +42,6 @@ function convertCourseName(fullName) {
   return courseMap[fullName] || null;
 }
 
-function convertCategory(fullCategory) {
-  const categoryMap = {
-    'GENERAL': 'GEN',
-    'SCHEDULED CASTE (SC)': 'SC', 
-    'OTHER BACKWARD CLASSES (OBC)': 'OBC',
-    'ECONOMICALLY WEAKER SECTIONS (EWS)': 'EWS'
-  };
-  return categoryMap[fullCategory] || fullCategory;
-}
-
 async function main() {
   try {
     // Clear existing data
@@ -130,8 +120,8 @@ async function main() {
           phoneNumber: student.phoneNumber || '',
           email: student.email || '',
           jeeCRL: parseInt(student.jeeCRL?.replace(/,/g, '') || '0'),
-          category: convertCategory(student.category) || 'GEN',
-          subCategory: student.subCategory || 'GNGN',
+          category: student.category,
+          subCategory: student.subcategory,
           categoryRank: parseInt(student.categoryRank || '0'),
           sptMarks: parseFloat(student.sptMarks || '0'),
           cdpPriority: parseInt(student.cdpPriority || '0'),
